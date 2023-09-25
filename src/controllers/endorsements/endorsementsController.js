@@ -16,7 +16,7 @@ async function addEndorsement(req, res) {
   const success = await endorsements.addEndorsement(userId, postId);
 
   if (success) {
-    res.json({ message: 'Endorsement added successfully.' });
+    res.json({ message: 'Endorsement added successfully' });
   } else {
     res.status(500).json({ error: 'Failed to add endorsement.' });
   }

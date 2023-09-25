@@ -44,6 +44,8 @@ define('forum/topic/events', [
         'posts.downvote': togglePostVote,
         'posts.unvote': togglePostVote,
 
+        'posts.endorse': handlePostEndorse,
+
         'event:new_notification': onNewNotification,
         'event:new_post': posts.onNewPost,
     };
