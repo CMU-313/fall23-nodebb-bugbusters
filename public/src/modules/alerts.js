@@ -51,6 +51,7 @@ define('alerts', ['translator', 'components', 'hooks'], function (translator, co
     };
 
     function createNew(params) {
+        console.log("create New alert!");
         app.parseAndTranslate('alert', params, function (html) {
             let alert = $('#' + params.alert_id);
             if (alert.length) {
@@ -89,6 +90,7 @@ define('alerts', ['translator', 'components', 'hooks'], function (translator, co
     }
 
     function updateAlert(alert, params) {
+        console.log("updateAlert:alert, params:", alert, params);
         alert.find('strong').translateHtml(params.title);
         alert.find('p').translateHtml(params.message);
         alert.attr('class', 'alert alert-dismissable alert-' + params.type + ' clearfix');
@@ -121,6 +123,7 @@ define('alerts', ['translator', 'components', 'hooks'], function (translator, co
     }
 
     function startTimeout(alert, params) {
+        console.log("startTimeout Here??? public/src/modules/alerts.js");
         const timeout = params.timeout;
 
         const timeoutId = setTimeout(function () {

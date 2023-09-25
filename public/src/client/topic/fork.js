@@ -44,6 +44,7 @@ define('forum/topic/fork', ['components', 'postSelect', 'alerts'], function (com
     }
 
     function createTopicFromPosts() {
+        console.log("createTopicFromPosts");
         forkCommit.attr('disabled', true);
         socket.emit('topics.createTopicFromPosts', {
             title: forkModal.find('#fork-title').val(),

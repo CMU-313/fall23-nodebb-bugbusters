@@ -26,6 +26,7 @@ module.exports = function (SocketTopics) {
     };
 
     SocketTopics.canRemoveTag = async function (socket, data) {
+        console.log("SocketTopics.canRemoveTag");
         if (!data || !data.tag) {
             throw new Error('[[error:invalid-data]]');
         }
@@ -48,15 +49,18 @@ module.exports = function (SocketTopics) {
     };
 
     SocketTopics.searchTags = async function (socket, data) {
+        console.log("SocketTopics.searchTags");
         const result = await searchTags(socket.uid, topics.searchTags, data);
         return result.map(tag => tag.value);
     };
 
     SocketTopics.searchAndLoadTags = async function (socket, data) {
+        console.log("SocketTopics.searchAndLoadTags");
         return await searchTags(socket.uid, topics.searchAndLoadTags, data);
     };
 
     async function searchTags(uid, method, data) {
+        console.log("searchTags for SocketTopics");
         const allowed = await privileges.global.can('search:tags', uid);
         if (!allowed) {
             throw new Error('[[error:no-privileges]]');
@@ -72,6 +76,7 @@ module.exports = function (SocketTopics) {
     }
 
     SocketTopics.loadMoreTags = async function (socket, data) {
+        console.log("SocketTopics.loadMoreTags:socket, data", socket, data);
         if (!data || !utils.isNumber(data.after)) {
             throw new Error('[[error:invalid-data]]');
         }

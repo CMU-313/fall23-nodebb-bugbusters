@@ -303,7 +303,7 @@ define('admin/extend/plugins', [
                 title: '[[admin/extend/plugins:alert.' + (pluginData.installed ? 'installed' : 'uninstalled') + ']]',
                 message: '[[admin/extend/plugins:alert.' + (pluginData.installed ? 'install-success' : 'uninstall-success') + ']]',
                 type: 'info',
-                timeout: 5000,
+                ,
             });
 
             if (typeof callback === 'function') {

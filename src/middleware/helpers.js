@@ -9,6 +9,7 @@ const meta = require('../meta');
 const helpers = module.exports;
 
 helpers.try = function (middleware) {
+    console.log("helpers.try = function (middleware)");
     if (middleware && middleware.constructor && middleware.constructor.name === 'AsyncFunction') {
         return async function (req, res, next) {
             try {

@@ -60,7 +60,7 @@ define('admin/manage/category', [
                     title: 'Updated Categories',
                     message: 'Category "' + res.name + '" was successfully updated.',
                     type: 'success',
-                    timeout: 5000,
+                    ,
                 });
                 updateHash = {};
             }).catch(alerts.error);

@@ -38,7 +38,7 @@ define('autocomplete', ['api', 'alerts'], function (api, alerts) {
 
                 api.get('/api/users', params, function (err, result) {
                     if (err) {
-                        return alerts.error(err);
+                        return (err);
                     }
 
                     if (result && result.users) {
@@ -78,7 +78,7 @@ define('autocomplete', ['api', 'alerts'], function (api, alerts) {
                     query: request.term,
                 }, function (err, results) {
                     if (err) {
-                        return alerts.error(err);
+                        return (err);
                     }
                     if (results && results.length) {
                         const names = results.map(function (group) {
@@ -97,6 +97,7 @@ define('autocomplete', ['api', 'alerts'], function (api, alerts) {
     };
 
     module.tag = function (input, onSelect) {
+        console.log("autocomplete.js/module.tag");
         module.init({
             input,
             onSelect,

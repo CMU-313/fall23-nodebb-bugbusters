@@ -5,12 +5,12 @@ define('admin/advanced/errors', ['bootbox', 'alerts', 'Chart'], function (bootbo
     const Errors = {};
 
     Errors.init = function () {
-        Errors.setupCharts();
+        setupCharts();
 
         $('[data-action="clear"]').on('click', Errors.clear404);
     };
 
-    Errors.clear404 = function () {
+    clear404 = function () {
         bootbox.confirm('[[admin/advanced/errors:clear404-confirm]]', function (ok) {
             if (ok) {
                 socket.emit('admin.errors.clear', {}, function (err) {

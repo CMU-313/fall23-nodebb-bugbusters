@@ -63,6 +63,7 @@ define('persona/quickreply', [
 
             ready = false;
             api.post(`/topics/${ajaxify.data.tid}`, replyData, function (err, data) {
+                console.log("api.post alerts.error?")
                 ready = true;
                 if (err) {
                     return alerts.error(err);

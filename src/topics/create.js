@@ -17,6 +17,7 @@ const translator = require('../translator');
 
 module.exports = function (Topics) {
     Topics.create = async function (data) {
+        console.log("Topics.create");
         // This is an internal method, consider using Topics.post instead
         const timestamp = data.timestamp || Date.now();
 
@@ -65,7 +66,7 @@ module.exports = function (Topics) {
             user.addTopicIdToUser(topicData.uid, topicData.tid, timestamp),
             db.incrObjectField(`category:${topicData.cid}`, 'topic_count'),
             db.incrObjectField('global', 'topicCount'),
-            Topics.createTags(data.tags, topicData.tid, timestamp),
+            Topics.createTags(data.tags, topicData.uid, topicData.tid, timestamp),
             scheduled ? Promise.resolve() : categories.updateRecentTid(topicData.cid, topicData.tid),
         ]);
         if (scheduled) {
@@ -77,6 +78,7 @@ module.exports = function (Topics) {
     };
 
     Topics.post = async function (data) {
+        console.log("Tpics.post:");
         data = await plugins.hooks.fire('filter:topic.post', data);
         const { uid } = data;
 

@@ -24,11 +24,12 @@
         </div>
         <!-- ENDIF tags.length -->
         <!-- ENDIF displayTagSearch -->
+        
+        <!-- IF !tags.length -->
+        <div class="alert alert-warning">[[tags:no_tags]]</div>
+        <!-- ENDIF !tags.length -->
     </div>
 
-    <!-- IF !tags.length -->
-    <div class="alert alert-warning">[[tags:no_tags]]</div>
-    <!-- ENDIF !tags.length -->
 
     <div class="category row">
         <div class="col-md-12 clearfix tag-list" data-nextstart="{nextStart}">
