@@ -241,6 +241,7 @@ module.exports = function (Topics) {
         postData.bookmarked = false;
         postData.endorsed = false;
         postData.anon = false;
+        postData.endorsed = false;
         postData.display_edit_tools = true;
         postData.display_delete_tools = true;
         postData.display_moderator_tools = true;

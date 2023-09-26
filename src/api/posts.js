@@ -315,6 +315,14 @@ postsAPI.unanon = async function (caller, data) {
     return res;
 };
 
+postsAPI.endorse = async function (caller, data) {
+    return await apiHelpers.postCommand(caller, 'endorse', 'endorsed', '', data);
+};
+
+postsAPI.unendorse = async function (caller, data) {
+    return await apiHelpers.postCommand(caller, 'unendorse', 'endorsed', '', data);
+};
+
 async function diffsPrivilegeCheck(pid, uid) {
     const [deleted, privilegesData] = await Promise.all([
         posts.getPostField(pid, 'deleted'),

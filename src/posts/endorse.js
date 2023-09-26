@@ -65,4 +65,8 @@ module.exports = function (Posts) {
         }
         return await db.isSetMember(`pid:${pid}:users_endorsed`, uid);
     };
+<<<<<<< HEAD
 };
+=======
+};
+>>>>>>> 8a30790 (endorse is complete)
