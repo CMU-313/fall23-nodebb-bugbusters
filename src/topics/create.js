@@ -78,11 +78,12 @@ module.exports = function (Topics) {
     };
 
     Topics.post = async function (data) {
-        console.log("Tpics.post:");
+        console.log("1. Topics.post: in src/topics/create.js");
         data = await plugins.hooks.fire('filter:topic.post', data);
         const { uid } = data;
 
         data.title = String(data.title).trim();
+        data.uid
         data.tags = data.tags || [];
         if (data.content) {
             data.content = utils.rtrim(data.content);
@@ -249,11 +250,12 @@ module.exports = function (Topics) {
     }
 
     Topics.checkTitle = function (title) {
-        console.log("checkTitle");
+        console.log("2. Topics.checkTitle in src/topics/create.js");
         check(title, meta.config.minimumTitleLength, meta.config.maximumTitleLength, 'title-too-short', 'title-too-long');
     };
 
     Topics.checkContent = function (content) {
+        console.log(" Topics. checkContent in src/topics/create/js");
         check(content, meta.config.minimumPostLength, meta.config.maximumPostLength, 'content-too-short', 'content-too-long');
     };
 

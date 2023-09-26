@@ -37,6 +37,7 @@ module.exports = function (SocketTopics) {
     };
 
     SocketTopics.autocompleteTags = async function (socket, data) {
+        console.log("SocketTopics.autocompleteTags");
         if (data.cid) {
             const canRead = await privileges.categories.can('topics:read', data.cid, socket.uid);
             if (!canRead) {
@@ -45,6 +46,7 @@ module.exports = function (SocketTopics) {
         }
         data.cids = await categories.getCidsByPrivilege('categories:cid', socket.uid, 'topics:read');
         const result = await topics.autocompleteTags(data);
+        console.log("SocketTopics.autocompleteTags result = ", result);
         return result.map(tag => tag.value);
     };
 

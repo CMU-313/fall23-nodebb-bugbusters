@@ -212,7 +212,7 @@ module.exports = function (Posts) {
     }
 
     async function canPost(type, data) {
-        console.log("canPost:type, data", type, data);
+        console.log("src/posts/queue.js:canPost:type, data", type, data);
         const cid = await getCid(type, data);
         const typeToPrivilege = {
             topic: 'topics:create',

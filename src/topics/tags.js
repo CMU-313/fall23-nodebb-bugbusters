@@ -472,7 +472,7 @@ module.exports = function (Topics) {
             result = await plugins.hooks.fire('filter:topics.autocompleteTags', { data: data });
         } else {
             result = await findMatches(data);
-            console.log(result.matches);
+            console.log("Topics.autocompleteTags result.matches = ", result.matches);
         }
         return result.matches;
     };
