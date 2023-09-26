@@ -213,6 +213,7 @@ module.exports = function (Topics) {
     };
 
     async function onNewPost(postData, data) {
+        console.log("onNewPost");
         const { tid } = postData;
         const { uid } = postData;
         await Topics.markAsUnreadForAll(tid);
@@ -248,6 +249,7 @@ module.exports = function (Topics) {
     }
 
     Topics.checkTitle = function (title) {
+        console.log("checkTitle");
         check(title, meta.config.minimumTitleLength, meta.config.maximumTitleLength, 'title-too-short', 'title-too-long');
     };
 
@@ -257,6 +259,7 @@ module.exports = function (Topics) {
 
     function check(item, min, max, minError, maxError) {
         // Trim and remove HTML (latter for composers that send in HTML, like redactor)
+        console.log("topics/create.js/check");
         if (typeof item === 'string') {
             item = utils.stripHTMLTags(item).trim();
         }

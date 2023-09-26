@@ -43,6 +43,7 @@ postsAPI.get = async function (caller, data) {
 };
 
 postsAPI.edit = async function (caller, data) {
+    console.log("postsAPI.edit");
     if (!data || !data.pid || (meta.config.minimumPostLength !== 0 && !data.content)) {
         throw new Error('[[error:invalid-data]]');
     }
@@ -53,6 +54,7 @@ postsAPI.edit = async function (caller, data) {
     const contentLen = utils.stripHTMLTags(data.content).trim().length;
 
     if (data.title && data.title.length < meta.config.minimumTitleLength) {
+        console.log("throwing title-too-short err in src/api/posts.js");
         throw new Error(`[[error:title-too-short, ${meta.config.minimumTitleLength}]]`);
     } else if (data.title && data.title.length > meta.config.maximumTitleLength) {
         throw new Error(`[[error:title-too-long, ${meta.config.maximumTitleLength}]]`);

@@ -102,6 +102,7 @@ app = window.app || {};
             });
         });
         socket.on('event:alert', function (params) {
+            console.log("socket.on('event:alert', function(params)");
             require(['alerts'], function (alerts) {
                 alerts.alert(params);
             });

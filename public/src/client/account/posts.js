@@ -41,6 +41,7 @@ define('forum/account/posts', ['forum/account/header', 'forum/infinitescroll', '
     }
 
     function onPostsLoaded(posts, callback) {
+        console.log("onPostsLoaded");
         app.parseAndTranslate(template, 'posts', { posts: posts }, function (html) {
             $('[component="posts"]').append(html);
             html.find('img:not(.not-responsive)').addClass('img-responsive');

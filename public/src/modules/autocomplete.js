@@ -97,7 +97,7 @@ define('autocomplete', ['api', 'alerts'], function (api, alerts) {
     };
 
     module.tag = function (input, onSelect) {
-        console.log("autocomplete.js/module.tag");
+        console.log("module.tag in autocomplete.js:input, onSelect", input, onSelect);
         module.init({
             input,
             onSelect,
@@ -120,6 +120,7 @@ define('autocomplete', ['api', 'alerts'], function (api, alerts) {
     };
 
     function handleOnSelect(input, onselect, event, ui) {
+        console.log("handleOnSelect:input, onselect, event, ui", input, onselect, event, ui);
         onselect = onselect || function () { };
         const e = jQuery.Event('keypress');
         e.which = 13;

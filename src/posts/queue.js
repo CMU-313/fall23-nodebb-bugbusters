@@ -212,6 +212,7 @@ module.exports = function (Posts) {
     }
 
     async function canPost(type, data) {
+        console.log("canPost:type, data", type, data);
         const cid = await getCid(type, data);
         const typeToPrivilege = {
             topic: 'topics:create',
@@ -287,6 +288,7 @@ module.exports = function (Posts) {
     }
 
     async function createTopic(data) {
+        console.log("queue.js: createTopic");
         const result = await topics.post(data);
         socketHelpers.notifyNew(data.uid, 'newTopic', { posts: [result.postData], topic: result.topicData });
         return result;

@@ -7,6 +7,7 @@ define('forum/post-queue', [
     const PostQueue = {};
 
     PostQueue.init = function () {
+        console.log("PostQueue.init");
         $('[data-toggle="tooltip"]').tooltip();
 
         categoryFilter.init($('[component="category/dropdown"]'), {
@@ -105,12 +106,14 @@ define('forum/post-queue', [
     };
 
     function confirmReject(msg) {
+        console.log("confirmReject");
         return new Promise((resolve) => {
             bootbox.confirm(msg, resolve);
         });
     }
 
     function handleContentEdit(displayClass, editableClass, inputSelector) {
+        console.log("handleContentEdit");
         $('.posts-list').on('click', displayClass, function () {
             const el = $(this);
             const inputEl = el.parent().find(editableClass);
@@ -152,6 +155,7 @@ define('forum/post-queue', [
     }
 
     function handleBulkActions() {
+        console.log("handleBulkActions");
         $('[component="post-queue/bulk-actions"]').on('click', '[data-action]', async function () {
             const bulkAction = $(this).attr('data-action');
             let queueEls = $('.posts-list [data-id]');

@@ -18,6 +18,7 @@ define('admin/manage/tags', [
     };
 
     function handleCreate() {
+        console.log("public/src/admin/mange/tags.js:handleCreate()");
         const createModal = $('#create-modal');
         const createTagName = $('#create-tag-name');
         const createModalGo = $('#create-modal-go');
@@ -53,6 +54,7 @@ define('admin/manage/tags', [
     }
 
     function handleSearch() {
+        console.log("public/src/admin/manage/tags.js:handleSearch()");
         $('#tag-search').on('input propertychange', utils.debounce(function () {
             socket.emit('topics.searchAndLoadTags', {
                 query: $('#tag-search').val(),

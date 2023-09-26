@@ -5,6 +5,7 @@ const topics = require('../../topics');
 const Tags = module.exports;
 
 Tags.create = async function (socket, data) {
+    console.log("Tags.create socket.io ... tags.js");
     if (!data) {
         throw new Error('[[error:invalid-data]]');
     }

@@ -411,6 +411,7 @@ define('forum/topic/postTools', [
     }
 
     async function postAction(action, pid) {
+        console.log('postAction');
         ({ action } = await hooks.fire(`static:post.${action}`, { action, pid }));
         if (!action) {
             return;
