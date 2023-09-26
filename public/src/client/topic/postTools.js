@@ -112,6 +112,10 @@ define('forum/topic/postTools', [
             });
         });
 
+        postContainer.on('click', '[component="post/anon"]', function () {
+            return makePostAnon($(this), getData($(this), 'data-pid'));
+        });
+
         postContainer.on('click', '[component="post/bookmark"]', function () {
             return bookmarkPost($(this), getData($(this), 'data-pid'));
         });
@@ -376,10 +380,24 @@ define('forum/topic/postTools', [
                 return alerts.error(err);
             }
             const type = method === 'put' ? 'endorse' : 'unendorse';
+
             hooks.fire(`action:post.${type}`, { pid: pid });
         });
         return false;
-    }
+    };
+
+    function makePostAnon(button, pid) {
+        const method = button.attr('data-anon') === 'false' ? 'put' : 'del';
+
+        api[method](`/posts/${pid}/anon`, undefined, function (err) {
+            if (err) {
+                return alerts.error(err);
+            }
+            const type = method === 'put' ? 'anon' : 'unanon';
+            hooks.fire(`action:post.${type}`, { pid: pid });
+        });
+        return false;
+    };
 
     function getData(button, data) {
         return button.parents('[data-pid]').attr(data);

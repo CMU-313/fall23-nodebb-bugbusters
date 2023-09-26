@@ -5,6 +5,15 @@
         <span class="menu-icon"><i class="fa fa-fw fa-pencil"></i></span> [[topic:edit]]
     </a>
 </li>
+<li>
+    <a component="post/anon" role="menuitem" tabindex="-1" href="#" data-anon="{posts.anon}">
+        <span class="menu-icon">
+            <i component="post/anon/on" class="fa fa-fw fa-eye <!-- IF !posts.anon -->hidden<!-- ENDIF !posts.anon -->"></i>
+            <i component="post/anon/off" class="fa fa-fw fa-eye-slash <!-- IF posts.anon -->hidden<!-- ENDIF posts.anon -->"></i>
+        </span> 
+        <span class="anon-text">Anon Toggle</span>
+    </a>
+</li>
 <li <!-- IF posts.deleted -->hidden<!-- ENDIF posts.deleted -->>
     <a component="post/delete" role="menuitem" tabindex="-1" href="#"
         class="<!-- IF posts.deleted -->hidden<!-- ENDIF posts.deleted -->">

@@ -1,14 +1,30 @@
 <div class="clearfix post-header">
-    <div class="icon pull-left">
-        <a href="<!-- IF posts.user.userslug -->{config.relative_path}/user/{posts.user.userslug}<!-- ELSE -->#<!-- ENDIF posts.user.userslug -->">
-            {buildAvatar(posts.user, "sm2x", true, "", "user/picture")}
-            <i component="user/status" class="fa fa-circle status {posts.user.status}" title="[[global:{posts.user.status}]]"></i>
-        </a>
-    </div>
+        <div class="icon pull-left">
+            {{{if (posts.anon == "true")}}}
+                <i component="anon/icon" class="fa fa-fw fa-eye-slash"></i>
+            {{{else}}}
+                <a href="<!-- IF posts.user.userslug -->{config.relative_path}/user/{posts.user.userslug}<!-- ELSE -->#<!-- ENDIF posts.user.userslug -->">
+                    {buildAvatar(posts.user, "sm2x", true, "", "user/picture")}
+                    <i component="user/status" class="fa fa-circle status {posts.user.status}" title="[[global:{posts.user.status}]]"></i>
+                </a>
+            {{{end}}}
+        </div>
 
     <small class="pull-left">
-        <strong>
-            <a href="<!-- IF posts.user.userslug -->{config.relative_path}/user/{posts.user.userslug}<!-- ELSE -->#<!-- ENDIF posts.user.userslug -->" itemprop="author" data-username="{posts.user.username}" data-uid="{posts.user.uid}">{posts.user.displayname}</a>
+        <strong> 
+            {{{if (posts.anon == "true")}}}
+                <a href="#"
+                data-anon="{posts.anon}"
+                itemprop="author"
+                data-username=anon
+                data-uid="{posts.user.uid}">Anonymous Capybara</a>
+            {{{else}}}
+                <a href="<!-- IF posts.user.userslug -->{config.relative_path}/user/{posts.user.userslug}<!-- ELSE -->#<!-- ENDIF posts.user.userslug -->"
+                data-anon="{posts.anon}"
+                itemprop="author" 
+                data-username="{posts.user.username}" 
+                data-uid="{posts.user.uid}">{posts.user.displayname}</a>
+            {{{end}}}
         </strong>
 
         <!-- IMPORT partials/topic/badge.tpl -->

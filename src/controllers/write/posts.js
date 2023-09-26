@@ -95,6 +95,17 @@ Posts.unendorse = async (req, res) => {
     }
     const data = await mock(req);
     await api.posts.unendorse(req, data);
+};
+
+Posts.anon = async (req, res) => {
+    const data = await mock(req);
+    await api.posts.anon(req, data);
+    helpers.formatApiResponse(200, res);
+};
+
+Posts.unanon = async (req, res) => {
+    const data = await mock(req);
+    await api.posts.unanon(req, data);
     helpers.formatApiResponse(200, res);
 };
 

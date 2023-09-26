@@ -30,6 +30,7 @@ module.exports = function (SocketPosts) {
             flagged: flags.exists('post', data.pid, socket.uid), // specifically, whether THIS calling user flagged
             bookmarked: posts.hasBookmarked(data.pid, socket.uid),
             endorsed: posts.hasEndorsed(data.pid, socket.uid),
+            anon: posts.hasAnon(data.pid, socket.uid),
             postSharing: social.getActivePostSharing(),
             history: posts.diffs.exists(data.pid),
             canViewInfo: privileges.global.can('view:users:info', socket.uid),
@@ -39,6 +40,7 @@ module.exports = function (SocketPosts) {
         postData.absolute_url = `${nconf.get('url')}/post/${data.pid}`;
         postData.bookmarked = results.bookmarked;
         postData.endorsed = results.endorsed;
+        postData.anon = results.anon;
         postData.selfPost = socket.uid && socket.uid === postData.uid;
         postData.display_edit_tools = results.canEdit.flag;
         postData.display_delete_tools = results.canDelete.flag;
