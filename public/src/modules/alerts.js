@@ -5,6 +5,7 @@ define('alerts', ['translator', 'components', 'hooks'], function (translator, co
     const module = {};
 
     module.alert = function (params) {
+        console.log("in alerts.js module.alert: params", params);
         params.alert_id = 'alert_button_' + (params.alert_id ? params.alert_id : new Date().getTime());
         params.title = params.title ? params.title.trim() || '' : '';
         params.message = params.message ? params.message.trim() : '';
@@ -19,6 +20,7 @@ define('alerts', ['translator', 'components', 'hooks'], function (translator, co
     };
 
     module.success = function (message, timeout) {
+        console.log("alerts.js module.success: msg, time", message, timeout);
         module.alert({
             alert_id: utils.generateUUID(),
             title: '[[global:alert.success]]',
@@ -29,6 +31,7 @@ define('alerts', ['translator', 'components', 'hooks'], function (translator, co
     };
 
     module.error = function (message, timeout) {
+        console.log("alerts.js module.error:msg, time", message, timeout);
         message = (message && message.message) || message;
 
         if (message === '[[error:revalidate-failure]]') {

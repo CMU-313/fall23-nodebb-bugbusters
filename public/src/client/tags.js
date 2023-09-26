@@ -5,6 +5,7 @@ define('forum/tags', ['forum/infinitescroll', 'alerts'], function (infinitescrol
     const Tags = {};
 
     Tags.init = function () {
+        console.log("public/src/client/tags.js: Tags.init");
         app.enterRoom('tags');
         $('#tag-search').focus();
         $('#tag-search').on('input propertychange', utils.debounce(function () {
@@ -13,6 +14,7 @@ define('forum/tags', ['forum/infinitescroll', 'alerts'], function (infinitescrol
             }
 
             socket.emit('topics.searchAndLoadTags', { query: $('#tag-search').val() }, function (err, results) {
+                console.log("......in socket.emit'topics.searchAndLaodTags'");
                 if (err) {
                     return alerts.error(err);
                 }
@@ -24,6 +26,7 @@ define('forum/tags', ['forum/infinitescroll', 'alerts'], function (infinitescrol
     };
 
     Tags.loadMoreTags = function (direction) {
+        console.log("Tags.loadMoreTags: direction", direction);
         if (direction < 0 || !$('.tag-list').length || $('#tag-search').val()) {
             return;
         }
@@ -41,6 +44,7 @@ define('forum/tags', ['forum/infinitescroll', 'alerts'], function (infinitescrol
     };
 
     function resetSearch() {
+        console.log("public/src/client/tags.js: resetSearch")
         socket.emit('topics.loadMoreTags', {
             after: 0,
         }, function (err, data) {
@@ -52,6 +56,7 @@ define('forum/tags', ['forum/infinitescroll', 'alerts'], function (infinitescrol
     }
 
     function onTagsLoaded(tags, replace, callback) {
+        console.log("onTagsLoaded: tags, replace, callback", tags, replace, callback);
         callback = callback || function () {};
         app.parseAndTranslate('tags', 'tags', { tags: tags }, function (html) {
             $('.tag-list')[replace ? 'html' : 'append'](html);
