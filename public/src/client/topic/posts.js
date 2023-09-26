@@ -292,26 +292,28 @@ define('forum/topic/posts', [
         addNecroPostMessage();
 
 
-        // Add an "Endorse" button to each post
-        posts.each(function () {
-            const post = $(this);
-            const endorseButton = $('<button class="endorse-button">Endorse</button>');
-            const content = post.find('[component="post/content"]');
-            content.append(endorseButton);
+        // // Add an "Endorse" button to each post
+        // posts.each(function () {
+        //     const post = $(this);
+        //     const endorseButton = $('<button class="endorse-button">Endorse</button>');
+        //     const content = post.find('[component="post/content"]');
+        //     content.append(endorseButton);
 
-            // Add a click event handler to the button 
-            endorseButton.on("click", function () {
-                // Toggle the "endorsed" class to change the button's color
-                endorseButton.toggleClass('endorsed');
+        //     // Add a click event handler to the button 
+        //     // toggleClass adds the class if it isn't there and removes it if it is
 
-                // Change the button text to "Endorsed" when endorsed
-                if (endorseButton.hasClass('endorsed')) {
-                    endorseButton.text('Endorsed');
-                } else {
-                    endorseButton.text('Endorse');
-                }
-            });
-        });
+        //     endorseButton.on("click", function () {
+        //         // Toggle the "endorsed" class to change the button's color
+        //         endorseButton.toggleClass('endorsed');
+
+        //         // Change the button text to "Endorsed" when endorsed
+        //         if (endorseButton.hasClass('endorsed')) {
+        //             endorseButton.text('Endorsed');
+        //         } else {
+        //             endorseButton.text('Endorse');
+        //         }
+        //     });
+        // });
 
     
     };
@@ -444,7 +446,6 @@ define('forum/topic/posts', [
             mainPost.find('.post-bar').remove();
         }
     };
-
     function hidePostToolsForDeletedPosts(posts) {
         posts.each(function () {
             if ($(this).hasClass('deleted')) {
