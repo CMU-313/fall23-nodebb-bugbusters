@@ -116,6 +116,10 @@ define('forum/topic/postTools', [
             return bookmarkPost($(this), getData($(this), 'data-pid'));
         });
 
+        postContainer.on('click', '[component="post/endorse"]', function () {
+            return endorsePost($(this), getData($(this), 'data-pid'));
+        });
+
         postContainer.on('click', '[component="post/upvote"]', function () {
             return votes.toggleVote($(this), '.upvoted', 1);
         });
@@ -359,6 +363,19 @@ define('forum/topic/postTools', [
                 return alerts.error(err);
             }
             const type = method === 'put' ? 'bookmark' : 'unbookmark';
+            hooks.fire(`action:post.${type}`, { pid: pid });
+        });
+        return false;
+    }
+
+    function endorsePost(button, pid) {
+        const method = button.attr('data-endorsed') === 'false' ? 'put' : 'del';
+
+        api[method](`/posts/${pid}/endorse`, undefined, function (err) {
+            if (err) {
+                return alerts.error(err);
+            }
+            const type = method === 'put' ? 'endorse' : 'unendorse';
             hooks.fire(`action:post.${type}`, { pid: pid });
         });
         return false;
