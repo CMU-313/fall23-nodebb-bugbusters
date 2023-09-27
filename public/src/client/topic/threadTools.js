@@ -1,6 +1,5 @@
 'use strict';
 
-
 define('forum/topic/threadTools', [
     'components',
     'translator',
@@ -268,7 +267,21 @@ define('forum/topic/threadTools', [
         });
     };
 
+    // inputs: 
+        // data: object {
+            // tid: number
+            // isLocked: boolean
+            // priveleges: object
+            // deleted: boolean
+            // events: object
+        // }
+    // output: void
     ThreadTools.setLockedState = function (data) {
+        // can't load assert in UI, but still performing sanity checks
+        if (typeof(data) != "object") {
+            throw new Error("Types don't match!");
+        }
+
         const threadEl = components.get('topic');
         if (parseInt(data.tid, 10) !== parseInt(threadEl.attr('data-tid'), 10)) {
             return;
