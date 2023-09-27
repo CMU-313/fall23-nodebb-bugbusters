@@ -8,11 +8,12 @@ const utils = require('../utils');
 const translator = require('../translator');
 const plugins = require('../plugins');
 
+// Added field archived
 const intFields = [
     'tid', 'cid', 'uid', 'mainPid', 'postcount',
     'viewcount', 'postercount', 'deleted', 'locked', 'pinned',
     'pinExpiry', 'timestamp', 'upvotes', 'downvotes', 'lastposttime',
-    'deleterUid',
+    'deleterUid', 'archived',
 ];
 
 module.exports = function (Topics) {
@@ -38,6 +39,7 @@ module.exports = function (Topics) {
         return result.topics;
     };
 
+    // Might use this to get isArchived
     Topics.getTopicField = async function (tid, field) {
         const topic = await Topics.getTopicFields(tid, [field]);
         return topic ? topic[field] : null;
