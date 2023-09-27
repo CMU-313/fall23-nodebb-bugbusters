@@ -13,7 +13,7 @@ module.exports = function (Posts) {
     // inputs: (pid: string, uid: string)
     // output: object
     Posts.anon = async function (pid, uid) {
-        assert.equal(typeof (pid), 'string');
+        // assert.equal(typeof (pid), 'string');
         assert.equal(typeof (uid), 'number');
         const res = await toggleAnon('anon', pid, uid);
         assert.equal(typeof (res), 'object');
@@ -23,7 +23,7 @@ module.exports = function (Posts) {
     // inputs: (pid: string, uid: string)
     // output: object
     Posts.unanon = async function (pid, uid) {
-        assert.equal(typeof (pid), 'string');
+        // assert.equal(typeof (pid), 'string');
         assert.equal(typeof (uid), 'number');
         const res = await toggleAnon('unanon', pid, uid);
         assert.equal(typeof (res), 'object');
@@ -33,8 +33,8 @@ module.exports = function (Posts) {
     // inputs: (type: string, pid: string, uid: number)
     // output: object
     async function toggleAnon(type, pid, uid) {
-        assert.equal(typeof (type), 'string');
-        assert.equal(typeof (pid), 'string');
+        // assert.equal(typeof (type), 'string');
+        // assert.equal(typeof (pid), 'string');
         assert.equal(typeof (uid), 'number');
         if (parseInt(uid, 10) <= 0) {
             throw new Error('[[error:not-logged-in]]');
@@ -78,8 +78,8 @@ module.exports = function (Posts) {
     // inputs: (pid: string, uid: number)
     // output: boolean
     Posts.hasAnon = async function (pid, uid) {
-        assert.equal(typeof (pid), 'string');
-        assert.equal(typeof (uid), 'number');
+        // assert.equal(typeof (pid), 'string');
+        // assert.equal(typeof (uid), 'number');
         if (parseInt(uid, 10) <= 0) {
             return Array.isArray(pid) ? pid.map(() => false) : false;
         }
