@@ -214,8 +214,8 @@ module.exports = function (Topics) {
     // inputs: (postData: object, data: object)
     // output: object
     async function onNewPost(postData, data) {
-        assert.equal(typeof(postData), "object");
-        assert.equal(typeof(data), "object");
+        assert.equal(typeof (postData), 'object');
+        assert.equal(typeof (data), 'object');
         const { tid } = postData;
         const { uid } = postData;
         await Topics.markAsUnreadForAll(tid);

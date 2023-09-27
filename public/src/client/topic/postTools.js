@@ -86,11 +86,11 @@ define('forum/topic/postTools', [
 
     // inputs:
     //     tid: string
-    // output: object 
+    // output: object
     // object has type boolean or void
     function addPostHandlers(tid) {
         // can't load assert in UI, but still performing sanity checks
-        if (typeof(tid) != "number") {
+        if (typeof (tid) !== 'number') {
             throw new Error("Types don't match! (postTools)");
         }
 
@@ -125,7 +125,7 @@ define('forum/topic/postTools', [
         postContainer.on('click', '[component="post/anon"]', function () {
             const res = makePostAnon($(this), getData($(this), 'data-pid'));
             // can't load assert in UI, but still performing sanity checks
-            if (typeof(res) != "boolean") {
+            if (typeof (res) !== 'boolean') {
                 throw new Error("Types don't match! (postTools)");
             }
             return res;
@@ -384,8 +384,12 @@ define('forum/topic/postTools', [
     }
 
     // input: (button: object, pid: number)
-    // output: 
+    // output: boolean
     function makePostAnon(button, pid) {
+        if (typeof (button) !== 'object' || typeof (pid) !== 'string') {
+            throw new Error("Types don't match! (postTools)");
+        }
+
         const method = button.attr('data-anon') === 'false' ? 'put' : 'del';
 
         api[method](`/posts/${pid}/anon`, undefined, function (err) {

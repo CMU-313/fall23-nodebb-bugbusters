@@ -11,8 +11,7 @@ define('forum/topic/events', [
     'translator',
     'benchpress',
     'hooks',
-], function (postTools, threadTools, posts, images, components, translator, Benchpress) {
-    
+], function (postTools, threadTools, posts, images, components, translator, Benchpress, hooks) {
     const Events = {};
 
     const events = {
@@ -233,8 +232,8 @@ define('forum/topic/events', [
     // output: void
     function togglePostAnon(data) {
         // can't load assert in UI, but still performing sanity checks
-        if (typeof(data) != "object") {
-            throw new Error("Types don't match! (events)");
+        if (typeof (data) !== 'object') {
+            throw new Error("Types don't match! (events.js)");
         }
 
         const el = $('[data-pid="' + data.post.pid + '"] [component="post/anon"]').filter(function (index, el) {

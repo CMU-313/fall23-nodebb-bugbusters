@@ -17,8 +17,8 @@ module.exports = function (SocketPosts) {
     // input: (socket: object, data: object)
     // output: object
     SocketPosts.loadPostTools = async function (socket, data) {
-        assert.equal(typeof(socket), "object");
-        assert.equal(typeof(data), "object");
+        assert.equal(typeof (socket), 'object');
+        assert.equal(typeof (data), 'object');
 
         if (!data || !data.pid || !data.cid) {
             throw new Error('[[error:invalid-data]]');
@@ -74,7 +74,7 @@ module.exports = function (SocketPosts) {
         });
         postData.tools = tools;
 
-        assert.equal(typeof(results), "object");
+        assert.equal(typeof (results), 'object');
         return results;
     };
 

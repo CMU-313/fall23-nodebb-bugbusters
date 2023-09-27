@@ -267,18 +267,11 @@ define('forum/topic/threadTools', [
         });
     };
 
-    // inputs: 
-        // data: object {
-            // tid: number
-            // isLocked: boolean
-            // priveleges: object
-            // deleted: boolean
-            // events: object
-        // }
+    // inputs: (data: object)
     // output: void
     ThreadTools.setLockedState = function (data) {
         // can't load assert in UI, but still performing sanity checks
-        if (typeof(data) != "object") {
+        if (typeof (data) !== 'object') {
             throw new Error("Types don't match!");
         }
 
