@@ -5,22 +5,31 @@
     {{{end}}}
 </div>
 <div class="tags">
-    <!-- IF displayTagSearch -->
-    <!-- IF tags.length -->
-    <div class="row">
-        <div class="col-lg-12">
+    <div class="topic-list-header btn-toolbar">
+        <div class="pull-left">
+            <!-- IF loggedIn -->
+            <!-- IMPORT partials/buttons/newTopic.tpl -->
+            <!-- ELSE -->
+            <a component="category/post/guest" href="{config.relative_path}/login" class="btn btn-primary">[[category:guest-login-post]]</a>
+            <!-- ENDIF loggedIn -->
+        </div>
+
+        <!-- IF displayTagSearch -->
+        <!-- IF tags.length -->
+        <div class="col-lg-10 pull-right">
             <div class="input-group">
                 <input type="text" class="form-control" placeholder="[[global:search]]" id="tag-search">
                 <span class="input-group-addon search-button"><i class="fa fa-search"></i></span>
             </div>
         </div>
+        <!-- ENDIF tags.length -->
+        <!-- ENDIF displayTagSearch -->
+        
+        <!-- IF !tags.length -->
+        <div class="alert alert-warning">[[tags:no_tags]]</div>
+        <!-- ENDIF !tags.length -->
     </div>
-    <!-- ENDIF tags.length -->
-    <!-- ENDIF displayTagSearch -->
 
-    <!-- IF !tags.length -->
-    <div class="alert alert-warning">[[tags:no_tags]]</div>
-    <!-- ENDIF !tags.length -->
 
     <div class="category row">
         <div class="col-md-12 clearfix tag-list" data-nextstart="{nextStart}">
