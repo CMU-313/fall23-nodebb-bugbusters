@@ -294,11 +294,11 @@ postsAPI.unendorse = async function (caller, data) {
 >>>>>>> 3c2de45 (added type comments and asserts)
 postsAPI.anon = async function (caller, data) {
     // can't load assert in UI, but still performing sanity checks
-    if (typeof(data) != "object" || typeof(caller) != "object") {
+    if (typeof (data) !== 'object' || typeof (caller) !== 'object') {
         throw new Error("Types don't match! (posts api anon input)");
     }
     const res = await apiHelpers.postCommand(caller, 'anon', 'anoned', '', data);
-    if (typeof(res) != "undefined") {
+    if (typeof (res) !== 'undefined') {
         throw new Error("Types don't match! (posts api anon output)");
     }
     return res;
@@ -308,11 +308,11 @@ postsAPI.anon = async function (caller, data) {
 // output: undefined
 postsAPI.unanon = async function (caller, data) {
     // can't load assert in UI, but still performing sanity checks
-    if (typeof(data) != "object" || typeof(caller) != "object") {
+    if (typeof (data) !== 'object' || typeof (caller) !== 'object') {
         throw new Error("Types don't match! (posts api unanon input)");
     }
     const res = await apiHelpers.postCommand(caller, 'unanon', 'anoned', '', data);
-    if (typeof(res) != "undefined") {
+    if (typeof (res) !== 'undefined') {
         throw new Error("Types don't match! (posts api unanon output)");
     }
     return res;

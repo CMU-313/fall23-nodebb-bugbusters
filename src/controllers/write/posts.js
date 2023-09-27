@@ -104,7 +104,7 @@ Posts.unendorse = async (req, res) => {
 >>>>>>> 3c2de45 (added type comments and asserts)
 Posts.anon = async (req, res) => {
     // can't load assert in UI, but still performing sanity checks
-    if (typeof(req) != "object" || typeof(res) != "object") {
+    if (typeof (req) !== 'object' || typeof (res) !== 'object') {
         throw new Error("Types don't match! (posts controller)");
     }
     const data = await mock(req);
@@ -116,7 +116,7 @@ Posts.anon = async (req, res) => {
 // output: void
 Posts.unanon = async (req, res) => {
     // can't load assert in UI, but still performing sanity checks
-    if (typeof(req) != "object" || typeof(res) != "object") {
+    if (typeof (req) !== 'object' || typeof (res) !== 'object') {
         throw new Error("Types don't match! (posts controller)");
     }
     const data = await mock(req);
