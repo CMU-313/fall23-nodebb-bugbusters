@@ -7,9 +7,6 @@
         <li><a href="#" component="topic/reply-as-topic">[[topic:reply-as-topic]]</a></li>
     </ul>
 
-
-
-    
 </div>
 
 <!-- IF loggedIn -->

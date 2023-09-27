@@ -290,32 +290,6 @@ define('forum/topic/posts', [
         Posts.addBlockquoteEllipses(posts);
         hidePostToolsForDeletedPosts(posts);
         addNecroPostMessage();
-
-
-        // // Add an "Endorse" button to each post
-        // posts.each(function () {
-        //     const post = $(this);
-        //     const endorseButton = $('<button class="endorse-button">Endorse</button>');
-        //     const content = post.find('[component="post/content"]');
-        //     content.append(endorseButton);
-
-        //     // Add a click event handler to the button 
-        //     // toggleClass adds the class if it isn't there and removes it if it is
-
-        //     endorseButton.on("click", function () {
-        //         // Toggle the "endorsed" class to change the button's color
-        //         endorseButton.toggleClass('endorsed');
-
-        //         // Change the button text to "Endorsed" when endorsed
-        //         if (endorseButton.hasClass('endorsed')) {
-        //             endorseButton.text('Endorsed');
-        //         } else {
-        //             endorseButton.text('Endorse');
-        //         }
-        //     });
-        // });
-
-    
     };
 
     Posts.addTopicEvents = function (events) {

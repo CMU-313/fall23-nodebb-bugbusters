@@ -87,13 +87,16 @@ Posts.endorse = async (req, res) => {
     const data = await mock(req);
     await api.posts.endorse(req, data);
     helpers.formatApiResponse(200, res);
-}
+};
 
 Posts.unendorse = async (req, res) => {
+    if (typeof req !== 'object' || typeof res !== 'object') {
+        throw new Error('Both req and res must be objects.');
+    }
     const data = await mock(req);
     await api.posts.unendorse(req, data);
     helpers.formatApiResponse(200, res);
-}
+};
 
 Posts.getDiffs = async (req, res) => {
     helpers.formatApiResponse(200, res, await api.posts.getDiffs(req, { ...req.params }));
