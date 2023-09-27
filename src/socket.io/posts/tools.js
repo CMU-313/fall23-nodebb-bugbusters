@@ -104,9 +104,5 @@ module.exports = function (SocketPosts) {
 
         await Promise.all(logs);
     };
-<<<<<<< HEAD
 };
 
-=======
-};
->>>>>>> 8a30790 (endorse is complete)
