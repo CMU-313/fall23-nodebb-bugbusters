@@ -2,17 +2,40 @@
 
 const db = require('../database');
 const plugins = require('../plugins');
+const assert = require("assert");
 
+// input: (Posts: object)
+// output: void
 module.exports = function (Posts) {
+    // can't load assert in UI, but still performing sanity checks
+    assert.equal(typeof(Posts), "object");
+
+    // inputs: (pid: string, uid: string)
+    // output: undefined
     Posts.anon = async function (pid, uid) {
-        return await toggleAnon('anon', pid, uid);
+        assert.equal(typeof(pid), "string");
+        assert.equal(typeof(uid), "number");
+        const res = await toggleAnon('anon', pid, uid);
+        assert.equal(typeof(res), "undefined");
+        return res;
     };
 
+    // inputs: (pid: string, uid: string)
+    // output: undefined
     Posts.unanon = async function (pid, uid) {
-        return await toggleAnon('unanon', pid, uid);
+        assert.equal(typeof(pid), "string");
+        assert.equal(typeof(uid), "number");
+        const res = await toggleAnon('unanon', pid, uid);
+        assert.equal(typeof(res), "undefined");
+        return res;
     };
 
+    // inputs: (type: string, pid: string, uid: number)
+    // output: object
     async function toggleAnon(type, pid, uid) {
+        assert.equal(typeof(type), "string");
+        assert.equal(typeof(pid), "string");
+        assert.equal(typeof(uid), "number");
         if (parseInt(uid, 10) <= 0) {
             throw new Error('[[error:not-logged-in]]');
         }
@@ -42,13 +65,21 @@ module.exports = function (Posts) {
             current: hasAnon ? 'anon' : 'unanon',
         });
 
-        return {
+        const res = {
             post: postData,
             isAnon: isAnoning,
         };
+
+        assert(typeof(res), "object");
+
+        return ;
     }
 
+    // inputs: (pid: string, uid: number)
+    // output: boolean
     Posts.hasAnon = async function (pid, uid) {
+        assert.equal(typeof(pid), "string");
+        assert.equal(typeof(uid), "number");
         if (parseInt(uid, 10) <= 0) {
             return Array.isArray(pid) ? pid.map(() => false) : false;
         }
@@ -57,6 +88,8 @@ module.exports = function (Posts) {
             const sets = pid.map(pid => `pid:${pid}:users_anoned`);
             return await db.isMemberOfSets(sets, uid);
         }
-        return await db.isSetMember(`pid:${pid}:users_anoned`, uid);
+        const res = await db.isSetMember(`pid:${pid}:users_anoned`, uid);
+        assert.equal(typeof(res), "boolean");
+        return res;
     };
 };

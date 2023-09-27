@@ -1,6 +1,5 @@
 'use strict';
 
-
 define('forum/topic/postTools', [
     'share',
     'navigator',
@@ -85,7 +84,16 @@ define('forum/topic/postTools', [
         navigator.setCount(postCount);
     };
 
+    // inputs:
+    //     tid: string
+    // output: object 
+    // object has type boolean or void
     function addPostHandlers(tid) {
+        // can't load assert in UI, but still performing sanity checks
+        if (typeof(tid) != "number") {
+            throw new Error("Types don't match! (postTools)");
+        }
+
         const postContainer = components.get('topic');
 
         handleSelectionTooltip();
@@ -112,8 +120,15 @@ define('forum/topic/postTools', [
             });
         });
 
+        // inputs: void
+        // outputs: boolean
         postContainer.on('click', '[component="post/anon"]', function () {
-            return makePostAnon($(this), getData($(this), 'data-pid'));
+            const res = makePostAnon($(this), getData($(this), 'data-pid'));
+            // can't load assert in UI, but still performing sanity checks
+            if (typeof(res) != "boolean") {
+                throw new Error("Types don't match! (postTools)");
+            }
+            return res;
         });
 
         postContainer.on('click', '[component="post/bookmark"]', function () {
@@ -368,6 +383,8 @@ define('forum/topic/postTools', [
         return false;
     }
 
+    // input: (button: object, pid: number)
+    // output: 
     function makePostAnon(button, pid) {
         const method = button.attr('data-anon') === 'false' ? 'put' : 'del';
 
