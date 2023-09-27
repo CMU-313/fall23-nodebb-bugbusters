@@ -37,7 +37,6 @@ module.exports = function (SocketPosts) {
             bookmarked: posts.hasBookmarked(data.pid, socket.uid),
             endorsed: posts.hasEndorsed(data.pid, socket.uid),
             anon: posts.hasAnon(data.pid, socket.uid),
-            endorsed: posts.hasEndorsed(data.pid, socket.uid),
             postSharing: social.getActivePostSharing(),
             history: posts.diffs.exists(data.pid),
             canViewInfo: privileges.global.can('view:users:info', socket.uid),
@@ -105,4 +104,3 @@ module.exports = function (SocketPosts) {
         await Promise.all(logs);
     };
 };
-

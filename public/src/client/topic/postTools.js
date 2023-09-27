@@ -399,7 +399,7 @@ define('forum/topic/postTools', [
             hooks.fire(`action:post.${type}`, { pid: pid });
         });
         return false;
-    };
+    }
 
     // input: (button: object, pid: number)
     // output: boolean
@@ -418,21 +418,7 @@ define('forum/topic/postTools', [
             hooks.fire(`action:post.${type}`, { pid: pid });
         });
         return false;
-    };
-
-    function endorsePost(button, pid) {
-        const method = button.attr('data-endorsed') === 'false' ? 'put' : 'del';
-
-        api[method](`/posts/${pid}/endorse`, undefined, function (err) {
-            if (err) {
-                return alerts.error(err);
-            }
-        const type = method === 'put' ? 'endorse' : 'unendorse';
-        hooks.fire(`action:post.${type}`, { pid: pid });
-        });
-        return false;
     }
-
 
     function getData(button, data) {
         return button.parents('[data-pid]').attr(data);

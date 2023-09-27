@@ -227,7 +227,6 @@ define('forum/topic/events', [
         el.find('[component="post/bookmark/off"]').toggleClass('hidden', data.isBookmarked);
     }
 
-<<<<<<< HEAD
     function togglePostEndorse(data) {
         const el = $('[data-pid="' + data.post.pid + '"] [component="post/endorse"]').filter(function (index, el) {
             return parseInt($(el).closest('[data-pid]').attr('data-pid'), 10) === parseInt(data.post.pid, 10);
@@ -240,18 +239,14 @@ define('forum/topic/events', [
 
         el.find('[component="post/endorse/on"]').toggleClass('hidden', !data.isEndorsed);
         el.find('[component="post/endorse/off"]').toggleClass('hidden', data.isEndorsed);
-    };
+    }
 
-
-
-=======
     // inputs:
     // data: object {
     //   post: PostObject,
     //   isAnon: boolean
     // }
     // output: void
->>>>>>> 3c2de45 (added type comments and asserts)
     function togglePostAnon(data) {
         // can't load assert in UI, but still performing sanity checks
         if (typeof (data) !== 'object') {
@@ -268,13 +263,9 @@ define('forum/topic/events', [
 
         el.find('[component="post/anon/on"]').toggleClass('hidden', !data.isAnon);
         el.find('[component="post/anon/off"]').toggleClass('hidden', data.isAnon);
-<<<<<<< HEAD
-    };
-
-
-=======
     }
->>>>>>> 8a30790 (endorse is complete)
+
+
     function togglePostVote(data) {
         const post = $('[data-pid="' + data.post.pid + '"]');
         post.find('[component="post/upvote"]').filter(function (index, el) {
@@ -283,20 +274,6 @@ define('forum/topic/events', [
         post.find('[component="post/downvote"]').filter(function (index, el) {
             return parseInt($(el).closest('[data-pid]').attr('data-pid'), 10) === parseInt(data.post.pid, 10);
         }).toggleClass('downvoted', data.downvote);
-    }
-
-    function togglePostEndorse(data) {
-
-            const el = $('[data-pid="' + data.post.pid + '"] [component="post/endorse"]').filter(function (index, el) {
-                return parseInt($(el).closest('[data-pid]').attr('data-pid'), 10) === parseInt(data.post.pid, 10);
-            });
-            if (!el.length) {
-                return;
-            }
-            el.attr('data-endorsed', data.isEndorsed);
-
-            el.find('[component="post/endorse/on"]').toggleClass('hidden', !data.isEndorsed);
-            el.find('[component="post/endorse/off"]').toggleClass('hidden', data.isEndorsed);
     }
 
     function onNewNotification(data) {
