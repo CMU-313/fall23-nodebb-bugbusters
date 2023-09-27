@@ -302,7 +302,6 @@ describe('Post\'s', () => {
         });
     });
 
-<<<<<<< HEAD
     describe('endorsing', () => {
         it('should endorse a post', async () => {
             const data = await apiPosts.endorse({ uid: voterUid }, { pid: postData.pid, room_id: `topic_${postData.tid}` });
@@ -316,7 +315,9 @@ describe('Post\'s', () => {
             assert.equal(data.isEndorsed, false);
             const hasEndorsed = await posts.hasEndorsed([postData.pid], voterUid);
             assert.equal(hasEndorsed[0], false);
-=======
+        });
+    });
+
     describe('anon toggle', () => {
         it('should make a post anon', async () => {
             const data = await apiPosts.anon({ uid: voterUid }, { pid: postData.pid, room_id: `topic_${postData.tid}` });
@@ -326,7 +327,6 @@ describe('Post\'s', () => {
         it('should make a post not anon', async () => {
             const data = await apiPosts.unanon({ uid: voterUid }, { pid: postData.pid, room_id: `topic_${postData.tid}` });
             assert.equal(data.isAnon, false);
->>>>>>> 3c2de45 (added type comments and asserts)
         });
     });
 
