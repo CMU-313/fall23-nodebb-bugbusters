@@ -1,6 +1,5 @@
 
 'use strict';
-
 const assert = require('assert');
 const async = require('async');
 const validator = require('validator');
@@ -40,11 +39,11 @@ module.exports = function (Topics) {
         let isExistingTag = true;
         assert(typeof isExistingTag === 'boolean', 'isExistingTag is a boolean');
         for (let i = 0; i < tags.length; i++) {
-            const tagVal = tags[i];
+            let tagVal = tags[i];
             assert(typeof tagVal === 'string', 'tagVal must be a string');
             isExistingTag = false;
             for (let j = 0; j < allTags.length; j++) {
-                const allTagVal = allTags[j].value;
+                let allTagVal = allTags[j].value;
                 assert(typeof allTagVal === 'string', 'allTagVal must be a string');
                 // console.log('tag val:', tagVal);
                 // console.log('allTag val:', allTagVal);
@@ -60,7 +59,7 @@ module.exports = function (Topics) {
             if ((accounttype === 'student') && !isExistingTag && !isAdmin) {
                 // console.log('reaching here?');
                 throw new Error('You are not authorized to create new tags!');
-            }
+            }   
             const cid = await Topics.getTopicField(tid, 'cid');
             const topicSets = tags.map(tag => `tag:${tag}:topics`).concat(
                 tags.map(tag => `cid:${cid}:tag:${tag}:topics`)
@@ -73,6 +72,7 @@ module.exports = function (Topics) {
             // console.error('Unauthorized Tag Creation was stopped');
             throw new Error('As a student you are not authorized to create new tags');
         }
+        //this function return nothing
     };
 
     Topics.filterTags = async function (tags, cid) {
