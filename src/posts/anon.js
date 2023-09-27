@@ -11,22 +11,22 @@ module.exports = function (Posts) {
     assert.equal(typeof (Posts), 'object');
 
     // inputs: (pid: string, uid: string)
-    // output: undefined
+    // output: object
     Posts.anon = async function (pid, uid) {
         assert.equal(typeof (pid), 'string');
         assert.equal(typeof (uid), 'number');
         const res = await toggleAnon('anon', pid, uid);
-        assert.equal(typeof (res), 'undefined');
+        assert.equal(typeof (res), 'object');
         return res;
     };
 
     // inputs: (pid: string, uid: string)
-    // output: undefined
+    // output: object
     Posts.unanon = async function (pid, uid) {
         assert.equal(typeof (pid), 'string');
         assert.equal(typeof (uid), 'number');
         const res = await toggleAnon('unanon', pid, uid);
-        assert.equal(typeof (res), 'undefined');
+        assert.equal(typeof (res), 'object');
         return res;
     };
 
