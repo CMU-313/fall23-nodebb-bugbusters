@@ -47,7 +47,6 @@ module.exports = function (SocketPosts) {
         postData.bookmarked = results.bookmarked;
         postData.endorsed = results.endorsed;
         postData.anon = results.anon;
-        postData.endorsed = results.endorsed;
         postData.selfPost = socket.uid && socket.uid === postData.uid;
         postData.display_edit_tools = results.canEdit.flag;
         postData.display_delete_tools = results.canDelete.flag;

@@ -259,12 +259,12 @@ define('forum/topic/events', [
         if (!el.length) {
             return;
         }
+
         el.attr('data-anon', data.isAnon);
 
         el.find('[component="post/anon/on"]').toggleClass('hidden', !data.isAnon);
         el.find('[component="post/anon/off"]').toggleClass('hidden', data.isAnon);
     }
-
 
     function togglePostVote(data) {
         const post = $('[data-pid="' + data.post.pid + '"]');

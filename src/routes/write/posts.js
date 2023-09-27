@@ -30,8 +30,6 @@ module.exports = function () {
     setupApiRoute(router, 'delete', '/:pid/endorse', [...middlewares, middleware.assert.post], controllers.write.posts.unendorse);
     setupApiRoute(router, 'put', '/:pid/anon', [...middlewares, middleware.assert.post], controllers.write.posts.anon);
     setupApiRoute(router, 'delete', '/:pid/anon', [...middlewares, middleware.assert.post], controllers.write.posts.unanon);
-    setupApiRoute(router, 'put', '/:pid/endorse', [...middlewares, middleware.assert.post], controllers.write.posts.endorse);
-    setupApiRoute(router, 'delete', '/:pid/endorse', [...middlewares, middleware.assert.post], controllers.write.posts.unendorse);
 
     setupApiRoute(router, 'get', '/:pid/diffs', [middleware.assert.post], controllers.write.posts.getDiffs);
     setupApiRoute(router, 'get', '/:pid/diffs/:since', [middleware.assert.post], controllers.write.posts.loadDiff);

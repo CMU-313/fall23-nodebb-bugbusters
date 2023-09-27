@@ -239,7 +239,6 @@ module.exports = function (Topics) {
 
         postData.votes = 0;
         postData.bookmarked = false;
-        postData.endorsed = false;
         postData.anon = false;
         postData.endorsed = false;
         postData.display_edit_tools = true;

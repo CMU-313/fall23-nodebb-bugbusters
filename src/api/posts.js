@@ -273,20 +273,6 @@ postsAPI.unbookmark = async function (caller, data) {
     return await apiHelpers.postCommand(caller, 'unbookmark', 'bookmarked', '', data);
 };
 
-postsAPI.endorse = async function (caller, data) {
-    if (typeof (data) !== 'object') {
-        throw new Error('Types do not match');
-    }
-    return await apiHelpers.postCommand(caller, 'endorse', 'endorsed', '', data);
-};
-
-postsAPI.unendorse = async function (caller, data) {
-    if (typeof (data) !== 'object') {
-        throw new Error('Types do not match');
-    }
-    return await apiHelpers.postCommand(caller, 'unendorse', 'endorsed', '', data);
-};
-
 // input: (caller: object, data: object)
 // output: object
 postsAPI.anon = async function (caller, data) {
