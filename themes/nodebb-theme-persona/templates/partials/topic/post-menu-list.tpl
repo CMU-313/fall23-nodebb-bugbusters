@@ -107,7 +107,7 @@
             <i component="post/endorse/off"
                 class="fa fa-fw fa-heart-o <!-- IF posts.endorsed -->hidden<!-- ENDIF posts.endorsed -->"></i>
         </span>
-        <span class="endorse-text">[[topic:endorse]]</span>
+        <span class="endorse-text">Endorse</span>
         <!-- <span component="post/endorse-count" class="endorseCount badge" data-endorsements="{posts.endorsements}">{posts.endorsements}</span>&nbsp; -->
     </a>
 </li>
