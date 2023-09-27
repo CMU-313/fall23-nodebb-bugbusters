@@ -1,6 +1,6 @@
 
 'use strict';
-
+const assert = require('assert');
 const async = require('async');
 const validator = require('validator');
 const _ = require('lodash');
@@ -18,20 +18,28 @@ module.exports = function (Topics) {
     Topics.createTags = async function (tags, uid, tid, timestamp) {
         console.log("Topics.createTags: tags, tid, timestamp", tags, tid, timestamp);
         const accounttype = await user.getUserField(uid, 'accounttype');
+        assert(typeof accounttype == 'string', 'accounttype must be string');
         const allTags = await getAllTags();
+        assert(typeof allTags === 'object', 'allTags must be an array object');
         console.log("printing all tags:", allTags);
         if (!Array.isArray(tags) || !tags.length) {
             console.log("createTags return early");
             return;
         }
-        const tagVal = tags[0];
-        let isExistingTag = false;
-        for (let i = 0; i < allTags.length; i++) {
-            let allTagVal = allTags[i].value;
-            console.log("tag val:", tagVal);
-            console.log("allTag val:", allTagVal);
-            if (tagVal == allTagVal) {
-                isExistingTag = true;
+        let isExistingTag = true;
+        assert(typeof isExistingTag === 'boolean', 'isExistingTag is a boolean');
+        for (let i = 0; i < tags.length; i++) {
+            let tagVal = tags[i];
+            assert(typeof tagVal === 'string', 'tagVal must be a string');
+            for (let j = 0; j < allTags.length; j++) {
+                let allTagVal = allTags[j].value;
+                assert(typeof allTagVal === 'string', 'allTagVal must be a string');
+                console.log("tag val:", tagVal);
+                console.log("allTag val:", allTagVal);
+                if (tagVal !== allTagVal) {
+                    isExistingTag = false;
+                    break;
+                }
             }
         }
 
@@ -50,9 +58,9 @@ module.exports = function (Topics) {
             await Promise.all(tags.map(updateTagCount));
         } catch(error) {
             console.error("Unauthorized Tag Creation was stopped");
-            tags = [];
-            return;
+            throw new Error('As a student you are not authorized to create new tags');
         }
+        //this function return nothing
     };
 
     Topics.filterTags = async function (tags, cid) {
