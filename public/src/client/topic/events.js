@@ -47,6 +47,9 @@ define('forum/topic/events', [
         'posts.downvote': togglePostVote,
         'posts.unvote': togglePostVote,
 
+        'posts.endorse': togglePostEndorse,
+        'posts.unendorse': togglePostEndorse,
+
         'event:new_notification': onNewNotification,
         'event:new_post': posts.onNewPost,
     };
@@ -222,6 +225,20 @@ define('forum/topic/events', [
 
         el.find('[component="post/bookmark/on"]').toggleClass('hidden', !data.isBookmarked);
         el.find('[component="post/bookmark/off"]').toggleClass('hidden', data.isBookmarked);
+    }
+
+    function togglePostEndorse(data) {
+        const el = $('[data-pid="' + data.post.pid + '"] [component="post/endorse"]').filter(function (index, el) {
+            return parseInt($(el).closest('[data-pid]').attr('data-pid'), 10) === parseInt(data.post.pid, 10);
+        });
+        if (!el.length) {
+            return;
+        }
+
+        el.attr('data-endorsed', data.isEndorsed);
+
+        el.find('[component="post/endorse/on"]').toggleClass('hidden', !data.isEndorsed);
+        el.find('[component="post/endorse/off"]').toggleClass('hidden', data.isEndorsed);
     }
 
     // inputs:

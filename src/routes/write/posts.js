@@ -26,6 +26,8 @@ module.exports = function () {
     setupApiRoute(router, 'put', '/:pid/bookmark', [...middlewares, middleware.assert.post], controllers.write.posts.bookmark);
     setupApiRoute(router, 'delete', '/:pid/bookmark', [...middlewares, middleware.assert.post], controllers.write.posts.unbookmark);
 
+    setupApiRoute(router, 'put', '/:pid/endorse', [...middlewares, middleware.assert.post], controllers.write.posts.endorse);
+    setupApiRoute(router, 'delete', '/:pid/endorse', [...middlewares, middleware.assert.post], controllers.write.posts.unendorse);
     setupApiRoute(router, 'put', '/:pid/anon', [...middlewares, middleware.assert.post], controllers.write.posts.anon);
     setupApiRoute(router, 'delete', '/:pid/anon', [...middlewares, middleware.assert.post], controllers.write.posts.unanon);
 
