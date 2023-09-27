@@ -1,6 +1,6 @@
 
 'use strict';
-
+const assert = require('assert');
 const async = require('async');
 const validator = require('validator');
 const _ = require('lodash');
@@ -15,18 +15,52 @@ const batch = require('../batch');
 const cache = require('../cache');
 
 module.exports = function (Topics) {
-    Topics.createTags = async function (tags, tid, timestamp) {
+    Topics.createTags = async function (tags, uid, tid, timestamp) {
+        console.log("Topics.createTags: tags, tid, timestamp", tags, tid, timestamp);
+        const accounttype = await user.getUserField(uid, 'accounttype');
+        assert(typeof accounttype == 'string', 'accounttype must be string');
+        const allTags = await getAllTags();
+        assert(typeof allTags === 'object', 'allTags must be an array object');
+        console.log("printing all tags:", allTags);
         if (!Array.isArray(tags) || !tags.length) {
+            console.log("createTags return early");
             return;
         }
+        let isExistingTag = true;
+        assert(typeof isExistingTag === 'boolean', 'isExistingTag is a boolean');
+        for (let i = 0; i < tags.length; i++) {
+            let tagVal = tags[i];
+            assert(typeof tagVal === 'string', 'tagVal must be a string');
+            for (let j = 0; j < allTags.length; j++) {
+                let allTagVal = allTags[j].value;
+                assert(typeof allTagVal === 'string', 'allTagVal must be a string');
+                console.log("tag val:", tagVal);
+                console.log("allTag val:", allTagVal);
+                if (tagVal !== allTagVal) {
+                    isExistingTag = false;
+                    break;
+                }
+            }
+        }
 
-        const cid = await Topics.getTopicField(tid, 'cid');
-        const topicSets = tags.map(tag => `tag:${tag}:topics`).concat(
-            tags.map(tag => `cid:${cid}:tag:${tag}:topics`)
-        );
-        await db.sortedSetsAdd(topicSets, timestamp, tid);
-        await Topics.updateCategoryTagsCount([cid], tags);
-        await Promise.all(tags.map(updateTagCount));
+        try{
+            if ((accounttype === 'student') && !isExistingTag) {
+                console.log("reaching here?");
+                throw new Error('You are not authorized to create new tags!');
+            }   
+            const cid = await Topics.getTopicField(tid, 'cid');
+            const topicSets = tags.map(tag => `tag:${tag}:topics`).concat(
+                tags.map(tag => `cid:${cid}:tag:${tag}:topics`)
+            );
+            console.log("New topic with this tag can be posted.");
+            await db.sortedSetsAdd(topicSets, timestamp, tid);
+            await Topics.updateCategoryTagsCount([cid], tags);
+            await Promise.all(tags.map(updateTagCount));
+        } catch(error) {
+            console.error("Unauthorized Tag Creation was stopped");
+            throw new Error('As a student you are not authorized to create new tags');
+        }
+        //this function return nothing
     };
 
     Topics.filterTags = async function (tags, cid) {
