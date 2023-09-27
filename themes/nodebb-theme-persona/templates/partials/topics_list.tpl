@@ -7,7 +7,7 @@
         <meta itemprop="position" content="{../index}" />
         <a id="{../index}" data-index="{../index}" component="topic/anchor"></a>
 
-        <div class="col-md-6 col-sm-9 col-xs-10 content">
+        <div class="col-md-5 col-sm-9 col-xs-10 content">
             <div class="avatar pull-left">
                 <!-- IF showSelect -->
                 <div class="select" component="topic/select">
@@ -75,6 +75,12 @@
             <span class="human-readable-number">{topics.postcount}</span> <a href="{config.relative_path}/topic/{topics.slug}/{topics.teaser.index}"><i class="fa fa-arrow-circle-right"></i></a>
         </div>
 
+
+        <div class="col-md-1 hidden-sm hidden-xs stats">
+            <a class="fa fa-fw fa-archive" onclick="bootbox.confirm('Are you sure you want to archive this topic?', function(result) { if (result) { socket.emit('topics.archive', {tid: '{topics.tid}'}); } });"></a>
+            <small>[[global:archive]]</small>
+        </div>
+
         <div class="col-md-1 hidden-sm hidden-xs stats stats-votes">
             <!-- IF !reputation:disabled -->
             <span class="human-readable-number" title="{topics.votes}">{topics.votes}</span><br />
@@ -90,6 +96,9 @@
         <div class="col-md-1 hidden-sm hidden-xs stats stats-viewcount">
             <span class="human-readable-number" title="{topics.viewcount}">{topics.viewcount}</span><br />
             <small>[[global:views]]</small>
+        </div>
+
+        <div class="col-md-1 hidden-sm hidden-xs">
         </div>
 
         <div class="col-md-3 col-sm-3 teaser hidden-xs" component="topic/teaser">
@@ -114,6 +123,8 @@
                 <!-- ENDIF topics.unreplied -->
             </div>
         </div>
+
+
     </li>
     {{{end}}}
 </ul>
