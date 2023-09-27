@@ -2,6 +2,7 @@
 'use strict';
 
 const _ = require('lodash');
+const assert = require('assert');
 
 const db = require('../database');
 const utils = require('../utils');
@@ -210,7 +211,11 @@ module.exports = function (Topics) {
         return postData;
     };
 
+    // inputs: (postData: object, data: object)
+    // output: object
     async function onNewPost(postData, data) {
+        assert.equal(typeof (postData), 'object');
+        assert.equal(typeof (data), 'object');
         const { tid } = postData;
         const { uid } = postData;
         await Topics.markAsUnreadForAll(tid);
@@ -234,6 +239,7 @@ module.exports = function (Topics) {
 
         postData.votes = 0;
         postData.bookmarked = false;
+        postData.anon = false;
         postData.display_edit_tools = true;
         postData.display_delete_tools = true;
         postData.display_moderator_tools = true;

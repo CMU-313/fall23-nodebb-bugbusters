@@ -83,6 +83,30 @@ Posts.unbookmark = async (req, res) => {
     helpers.formatApiResponse(200, res);
 };
 
+// inputs: (req: object, res: object)
+// output: void
+Posts.anon = async (req, res) => {
+    // can't load assert in UI, but still performing sanity checks
+    if (typeof (req) !== 'object' || typeof (res) !== 'object') {
+        throw new Error("Types don't match! (posts controller)");
+    }
+    const data = await mock(req);
+    await api.posts.anon(req, data);
+    helpers.formatApiResponse(200, res);
+};
+
+// inputs: (req: object, res: object)
+// output: void
+Posts.unanon = async (req, res) => {
+    // can't load assert in UI, but still performing sanity checks
+    if (typeof (req) !== 'object' || typeof (res) !== 'object') {
+        throw new Error("Types don't match! (posts controller)");
+    }
+    const data = await mock(req);
+    await api.posts.unanon(req, data);
+    helpers.formatApiResponse(200, res);
+};
+
 Posts.getDiffs = async (req, res) => {
     helpers.formatApiResponse(200, res, await api.posts.getDiffs(req, { ...req.params }));
 };

@@ -40,6 +40,9 @@ define('forum/topic/events', [
         'posts.bookmark': togglePostBookmark,
         'posts.unbookmark': togglePostBookmark,
 
+        'posts.anon': togglePostAnon,
+        'posts.unanon': togglePostAnon,
+
         'posts.upvote': togglePostVote,
         'posts.downvote': togglePostVote,
         'posts.unvote': togglePostVote,
@@ -219,6 +222,31 @@ define('forum/topic/events', [
 
         el.find('[component="post/bookmark/on"]').toggleClass('hidden', !data.isBookmarked);
         el.find('[component="post/bookmark/off"]').toggleClass('hidden', data.isBookmarked);
+    }
+
+    // inputs:
+    // data: object {
+    //   post: PostObject,
+    //   isAnon: boolean
+    // }
+    // output: void
+    function togglePostAnon(data) {
+        // can't load assert in UI, but still performing sanity checks
+        if (typeof (data) !== 'object') {
+            throw new Error("Types don't match! (events.js)");
+        }
+
+        const el = $('[data-pid="' + data.post.pid + '"] [component="post/anon"]').filter(function (index, el) {
+            return parseInt($(el).closest('[data-pid]').attr('data-pid'), 10) === parseInt(data.post.pid, 10);
+        });
+        if (!el.length) {
+            return;
+        }
+
+        el.attr('data-anon', data.isAnon);
+
+        el.find('[component="post/anon/on"]').toggleClass('hidden', !data.isAnon);
+        el.find('[component="post/anon/off"]').toggleClass('hidden', data.isAnon);
     }
 
     function togglePostVote(data) {

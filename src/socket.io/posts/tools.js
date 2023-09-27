@@ -1,6 +1,7 @@
 'use strict';
 
 const nconf = require('nconf');
+const assert = require('assert');
 
 const db = require('../../database');
 const posts = require('../../posts');
@@ -13,7 +14,12 @@ const user = require('../../user');
 const utils = require('../../utils');
 
 module.exports = function (SocketPosts) {
+    // input: (socket: object, data: object)
+    // output: object
     SocketPosts.loadPostTools = async function (socket, data) {
+        assert.equal(typeof (socket), 'object');
+        assert.equal(typeof (data), 'object');
+
         if (!data || !data.pid || !data.cid) {
             throw new Error('[[error:invalid-data]]');
         }
@@ -29,6 +35,7 @@ module.exports = function (SocketPosts) {
             canFlag: privileges.posts.canFlag(data.pid, socket.uid),
             flagged: flags.exists('post', data.pid, socket.uid), // specifically, whether THIS calling user flagged
             bookmarked: posts.hasBookmarked(data.pid, socket.uid),
+            anon: posts.hasAnon(data.pid, socket.uid),
             postSharing: social.getActivePostSharing(),
             history: posts.diffs.exists(data.pid),
             canViewInfo: privileges.global.can('view:users:info', socket.uid),
@@ -37,6 +44,7 @@ module.exports = function (SocketPosts) {
         const postData = results.posts;
         postData.absolute_url = `${nconf.get('url')}/post/${data.pid}`;
         postData.bookmarked = results.bookmarked;
+        postData.anon = results.anon;
         postData.selfPost = socket.uid && socket.uid === postData.uid;
         postData.display_edit_tools = results.canEdit.flag;
         postData.display_delete_tools = results.canDelete.flag;
@@ -66,6 +74,7 @@ module.exports = function (SocketPosts) {
         });
         postData.tools = tools;
 
+        assert.equal(typeof (results), 'object');
         return results;
     };
 

@@ -273,6 +273,34 @@ postsAPI.unbookmark = async function (caller, data) {
     return await apiHelpers.postCommand(caller, 'unbookmark', 'bookmarked', '', data);
 };
 
+// input: (caller: object, data: object)
+// output: object
+postsAPI.anon = async function (caller, data) {
+    // can't load assert in UI, but still performing sanity checks
+    if (typeof (data) !== 'object' || typeof (caller) !== 'object') {
+        throw new Error("Types don't match! (posts api anon input)");
+    }
+    const res = await apiHelpers.postCommand(caller, 'anon', 'anoned', '', data);
+    if (typeof (res) !== 'object') {
+        throw new Error("Types don't match! (posts api anon output)");
+    }
+    return res;
+};
+
+// input: (caller: object, data: object)
+// output: object
+postsAPI.unanon = async function (caller, data) {
+    // can't load assert in UI, but still performing sanity checks
+    if (typeof (data) !== 'object' || typeof (caller) !== 'object') {
+        throw new Error("Types don't match! (posts api unanon input)");
+    }
+    const res = await apiHelpers.postCommand(caller, 'unanon', 'anoned', '', data);
+    if (typeof (res) !== 'object') {
+        throw new Error("Types don't match! (posts api unanon output)");
+    }
+    return res;
+};
+
 async function diffsPrivilegeCheck(pid, uid) {
     const [deleted, privilegesData] = await Promise.all([
         posts.getPostField(pid, 'deleted'),

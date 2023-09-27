@@ -1,6 +1,5 @@
 'use strict';
 
-
 define('forum/topic/postTools', [
     'share',
     'navigator',
@@ -85,7 +84,16 @@ define('forum/topic/postTools', [
         navigator.setCount(postCount);
     };
 
+    // inputs:
+    //     tid: string
+    // output: object
+    // object has type boolean or void
     function addPostHandlers(tid) {
+        // can't load assert in UI, but still performing sanity checks
+        if (typeof (tid) !== 'number') {
+            throw new Error("Types don't match! (postTools)");
+        }
+
         const postContainer = components.get('topic');
 
         handleSelectionTooltip();
@@ -110,6 +118,17 @@ define('forum/topic/postTools', [
                     body: body,
                 });
             });
+        });
+
+        // inputs: void
+        // outputs: boolean
+        postContainer.on('click', '[component="post/anon"]', function () {
+            const res = makePostAnon($(this), getData($(this), 'data-pid'));
+            // can't load assert in UI, but still performing sanity checks
+            if (typeof (res) !== 'boolean') {
+                throw new Error("Types don't match! (postTools)");
+            }
+            return res;
         });
 
         postContainer.on('click', '[component="post/bookmark"]', function () {
@@ -359,6 +378,25 @@ define('forum/topic/postTools', [
                 return alerts.error(err);
             }
             const type = method === 'put' ? 'bookmark' : 'unbookmark';
+            hooks.fire(`action:post.${type}`, { pid: pid });
+        });
+        return false;
+    }
+
+    // input: (button: object, pid: number)
+    // output: boolean
+    function makePostAnon(button, pid) {
+        if (typeof (button) !== 'object' || typeof (pid) !== 'string') {
+            throw new Error("Types don't match! (postTools)");
+        }
+
+        const method = button.attr('data-anon') === 'false' ? 'put' : 'del';
+
+        api[method](`/posts/${pid}/anon`, undefined, function (err) {
+            if (err) {
+                return alerts.error(err);
+            }
+            const type = method === 'put' ? 'anon' : 'unanon';
             hooks.fire(`action:post.${type}`, { pid: pid });
         });
         return false;

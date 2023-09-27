@@ -1,6 +1,5 @@
 'use strict';
 
-
 define('forum/topic/threadTools', [
     'components',
     'translator',
@@ -268,7 +267,14 @@ define('forum/topic/threadTools', [
         });
     };
 
+    // inputs: (data: object)
+    // output: void
     ThreadTools.setLockedState = function (data) {
+        // can't load assert in UI, but still performing sanity checks
+        if (typeof (data) !== 'object') {
+            throw new Error("Types don't match!");
+        }
+
         const threadEl = components.get('topic');
         if (parseInt(data.tid, 10) !== parseInt(threadEl.attr('data-tid'), 10)) {
             return;
@@ -285,7 +291,7 @@ define('forum/topic/threadTools', [
         components.get('topic/reply/locked').toggleClass('hidden', ajaxify.data.privileges.isAdminOrMod || !data.isLocked || ajaxify.data.deleted);
 
         threadEl.find('[component="post"]:not(.deleted) [component="post/reply"], [component="post"]:not(.deleted) [component="post/quote"]').toggleClass('hidden', hideReply);
-        threadEl.find('[component="post/edit"], [component="post/delete"]').toggleClass('hidden', isLocked);
+        threadEl.find('[component="post/edit"], [component="post/delete"], [component="post/anon"]').toggleClass('hidden', isLocked);
 
         threadEl.find('[component="post"][data-uid="' + app.user.uid + '"].deleted [component="post/tools"]').toggleClass('hidden', isLocked);
 
