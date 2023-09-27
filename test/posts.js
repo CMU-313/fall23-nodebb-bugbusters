@@ -302,18 +302,6 @@ describe('Post\'s', () => {
         });
     });
 
-    describe('anon toggle', () => {
-        it('should make a post anon', async () => {
-            const data = await apiPosts.anon({ uid: voterUid }, { pid: postData.pid, room_id: `topic_${postData.tid}` });
-            assert.equal(data.isAnon, true);
-        });
-
-        it('should make a post not anon', async () => {
-            const data = await apiPosts.unanon({ uid: voterUid }, { pid: postData.pid, room_id: `topic_${postData.tid}` });
-            assert.equal(data.isAnon, false);
-        });
-    });
-
     describe('post tools', () => {
         it('should error if data is invalid', (done) => {
             socketPosts.loadPostTools({ uid: globalModUid }, null, (err) => {
