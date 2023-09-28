@@ -21,7 +21,7 @@ describe('Categories', () => {
     before((done) => {
         async.series({
             posterUid: function (next) {
-                User.create({ username: 'poster' }, next);
+                User.create({ username: 'poster', accounttype: 'instructor' }, next);
             },
             adminUid: function (next) {
                 User.create({ username: 'admin' }, next);

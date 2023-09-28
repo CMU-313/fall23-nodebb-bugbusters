@@ -36,7 +36,7 @@ describe('Controllers', () => {
         });
         cid = category.cid;
 
-        fooUid = await user.create({ username: 'foo', password: 'barbar', gdpr_consent: true });
+        fooUid = await user.create({ username: 'foo', accounttype: 'instructor', password: 'barbar', gdpr_consent: true });
         await user.setUserField(fooUid, 'email', 'foo@test.com');
         await user.email.confirmByUid(fooUid);
 
