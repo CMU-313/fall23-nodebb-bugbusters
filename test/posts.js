@@ -35,10 +35,10 @@ describe('Post\'s', () => {
     before((done) => {
         async.series({
             voterUid: function (next) {
-                user.create({ username: 'upvoter' }, next);
+                user.create({ username: 'upvoter', accounttype: 'instructor' }, next);
             },
             voteeUid: function (next) {
-                user.create({ username: 'upvotee' }, next);
+                user.create({ username: 'upvotee', accounttype: 'instructor' }, next);
             },
             globalModUid: function (next) {
                 user.create({ username: 'globalmod', password: 'globalmodpwd' }, next);
