@@ -420,6 +420,7 @@ define('forum/topic/posts', [
             mainPost.find('.post-bar').remove();
         }
     };
+
     function hidePostToolsForDeletedPosts(posts) {
         posts.each(function () {
             if ($(this).hasClass('deleted')) {
