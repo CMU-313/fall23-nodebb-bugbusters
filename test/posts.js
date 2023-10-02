@@ -1126,7 +1126,7 @@ describe('Post\'s', () => {
         it('should bypass post queue if user is in exempt group', async () => {
             const oldValue = meta.config.groupsExemptFromPostQueue;
             meta.config.groupsExemptFromPostQueue = ['registered-users'];
-            const uid = await ({ username: 'mergeexemptuser' });
+            const uid = await user.create({ username: 'mergeexemptuser' });
             console.log('uid', uid);
             const result = await apiTopics.create({ uid: uid, emit: () => {} }, { title: 'should not be queued', content: 'topic content', cid: cid });
             console.log('result nand its title', result, result.title);
