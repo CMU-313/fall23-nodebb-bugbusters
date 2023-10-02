@@ -27,6 +27,9 @@ module.exports = function (Topics) {
         if (typeof accounttype === 'undefined') {
             console.log('The user is a guest');
         }
+        if (uid !== 0) {
+            console.log('Username: ', user.getUserField(uid, 'username'));
+        }
         const isAdmin = await user.isAdministrator(uid);
         assert(typeof isAdmin === 'boolean', 'isAdmin must be a boolean');
         assert((typeof accounttype === 'string' || typeof accounttype === 'undefined'), 'accounttype must be string or undefined');
