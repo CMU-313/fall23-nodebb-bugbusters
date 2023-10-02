@@ -513,6 +513,7 @@ async function generateBannedResponse(res) {
 }
 
 helpers.generateError = async (statusCode, message, res) => {
+    console.log('helpers.generateError');
     async function translateMessage(message) {
         const { req } = res;
         const settings = req.query.lang ? null : await user.getSettings(req.uid);
