@@ -39,7 +39,7 @@ describe('Topic\'s', () => {
 
     before(async () => {
         adminUid = await User.create({ username: 'admin', password: '123456' });
-        fooUid = await User.create({ username: 'foo' });
+        fooUid = await User.create({ username: 'foo', accounttype: 'instructor' });
         await groups.join('administrators', adminUid);
         const adminLogin = await helpers.loginUser('admin', '123456');
         adminJar = adminLogin.jar;
@@ -179,6 +179,7 @@ describe('Topic\'s', () => {
             await privileges.categories.give(['groups:topics:reply'], categoryObj.cid, 'guests');
 
             const jar = request.jar();
+            console.log('Bad-Request-Error jar:', jar);
             const result = await helpers.request('post', `/api/v3/topics`, {
                 form: {
                     title: 'just a title',
