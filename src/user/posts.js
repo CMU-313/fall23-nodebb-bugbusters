@@ -10,10 +10,12 @@ module.exports = function (User) {
     };
 
     User.isReadyToQueue = async function (uid, cid) {
+        consolo.log('isReadyToQueue');
         await isReady(uid, cid, 'lastqueuetime');
     };
 
     async function isReady(uid, cid, field) {
+        console.log('src/user/posts.js: isReady(uid, cid, field)');
         if (parseInt(uid, 10) === 0) {
             return;
         }

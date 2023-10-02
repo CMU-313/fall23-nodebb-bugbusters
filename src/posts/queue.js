@@ -135,6 +135,7 @@ module.exports = function (Posts) {
     }
 
     Posts.addToQueue = async function (data) {
+        console.log('Posts.addToQueue');
         const type = getType(data);
         const now = Date.now();
         const id = `${type}-${now}`;
@@ -212,6 +213,7 @@ module.exports = function (Posts) {
     }
 
     async function canPost(type, data) {
+        console.log('src/posts/queue.js: canPost');
         const cid = await getCid(type, data);
         const typeToPrivilege = {
             topic: 'topics:create',
