@@ -35,10 +35,10 @@ describe('Post\'s', () => {
     before((done) => {
         async.series({
             voterUid: function (next) {
-                user.create({ username: 'upvoter', accounttype: 'instructor' }, next);
+                user.create({ username: 'upvoter' }, next);
             },
             voteeUid: function (next) {
-                user.create({ username: 'upvotee', accounttype: 'instructor' }, next);
+                user.create({ username: 'upvotee' }, next);
             },
             globalModUid: function (next) {
                 user.create({ username: 'globalmod', password: 'globalmodpwd' }, next);
@@ -1126,8 +1126,10 @@ describe('Post\'s', () => {
         it('should bypass post queue if user is in exempt group', async () => {
             const oldValue = meta.config.groupsExemptFromPostQueue;
             meta.config.groupsExemptFromPostQueue = ['registered-users'];
-            const uid = await user.create({ username: 'mergeexemptuser' });
+            const uid = await ({ username: 'mergeexemptuser' });
+            console.log('uid', uid);
             const result = await apiTopics.create({ uid: uid, emit: () => {} }, { title: 'should not be queued', content: 'topic content', cid: cid });
+            console.log('result nand its title', result, result.title);
             assert.strictEqual(result.title, 'should not be queued');
             meta.config.groupsExemptFromPostQueue = oldValue;
         });

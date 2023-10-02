@@ -31,10 +31,10 @@ describe('Search', () => {
             function (next) {
                 async.series({
                     phoebe: function (next) {
-                        user.create({ username: 'phoebe' }, next);
+                        user.create({ username: 'phoebe', accounttype: 'instructor' }, next);
                     },
                     ginger: function (next) {
-                        user.create({ username: 'ginger' }, next);
+                        user.create({ username: 'ginger', accounttype: 'instructor' }, next);
                     },
                     category1: function (next) {
                         categories.create({
