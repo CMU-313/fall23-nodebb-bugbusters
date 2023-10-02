@@ -24,7 +24,6 @@ module.exports = function (Topics) {
         assert(typeof allTags === 'object', 'allTags must be an array object');
         console.log('printing all tags:', allTags);
         if (!Array.isArray(tags) || !tags.length) {
-            console.log('createTags return early');
             return;
         }
         let isExistingTag = true;

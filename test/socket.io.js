@@ -35,7 +35,7 @@ describe('socket.io', () => {
     before(async () => {
         const data = await Promise.all([
             user.create({ username: 'admin', password: 'adminpwd' }),
-            user.create({ username: 'regular', password: 'regularpwd' }),
+            user.create({ username: 'regular', password: 'regularpwd', accounttype: 'instructor' }),
             categories.create({
                 name: 'Test Category',
                 description: 'Test category created by testing script',

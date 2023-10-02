@@ -36,10 +36,10 @@ describe('Admin Controllers', () => {
                 user.create({ username: 'admin', password: 'barbar' }, next);
             },
             regularUid: function (next) {
-                user.create({ username: 'regular', password: 'regularpwd' }, next);
+                user.create({ username: 'regular', password: 'regularpwd', accounttype: 'instructor' }, next);
             },
             regular2Uid: function (next) {
-                user.create({ username: 'regular2' }, next);
+                user.create({ username: 'regular2', accounttype: 'instructor' }, next);
             },
             moderatorUid: function (next) {
                 user.create({ username: 'moderator', password: 'modmod' }, next);
