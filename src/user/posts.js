@@ -10,7 +10,7 @@ module.exports = function (User) {
     };
 
     User.isReadyToQueue = async function (uid, cid) {
-        consolo.log('isReadyToQueue');
+        console.log('isReadyToQueue');
         await isReady(uid, cid, 'lastqueuetime');
     };
 

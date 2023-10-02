@@ -17,12 +17,12 @@ const cache = require('../cache');
 
 module.exports = function (Topics) {
     Topics.createTags = async function (tags, uid, tid, timestamp) {
-        console.log('Topics.createTags: tags, tid, timestamp', tags, tid, timestamp);
+        console.log('Topics.createTags: tags, uid, tid, timestamp', tags, uid, tid, timestamp);
         const accounttype = await user.getUserField(uid, 'accounttype');
         assert(typeof accounttype === 'string', 'accounttype must be string');
         const allTags = await getAllTags();
         assert(typeof allTags === 'object', 'allTags must be an array object');
-        console.log('printing all tags:', allTags);
+        // console.log('printing all tags:', allTags);
         if (!Array.isArray(tags) || !tags.length) {
             return;
         }
