@@ -38,6 +38,9 @@
                 <i component="topic/moved" class="fa fa-arrow-circle-right <!-- IF !topics.oldCid -->hide<!-- ENDIF !topics.oldCid -->" title="[[topic:moved]]"></i>
                 {{{each topics.icons}}}{@value}{{{end}}}
 
+                <!-- IF topics.repliedByInstr -->
+                <span class="tag label label-info" style="background-color:gold;">i</span>
+                <!-- ENDIF topics.repliedByInstr --> 
 
                 <!-- IF !topics.noAnchor -->
                 <a href="{config.relative_path}/topic/{topics.slug}<!-- IF topics.bookmark -->/{topics.bookmark}<!-- ENDIF topics.bookmark -->">{topics.title}</a><br />

@@ -295,6 +295,7 @@ module.exports = function (Posts) {
     }
 
     async function createReply(data) {
+        console.log('fun createReply(data)', data);
         const postData = await topics.reply(data);
         const result = {
             posts: [postData],

@@ -157,6 +157,7 @@ module.exports = function (Topics) {
     };
 
     Topics.reply = async function (data) {
+        console.log('Topics.reply in src/topics/create.js');
         data = await plugins.hooks.fire('filter:topic.reply', data);
         const { tid } = data;
         const { uid } = data;
@@ -207,7 +208,7 @@ module.exports = function (Topics) {
 
         analytics.increment(['posts', `posts:byCid:${data.cid}`]);
         plugins.hooks.fire('action:topic.reply', { post: _.clone(postData), data: data });
-
+        console.log('postData: ', postData);
         return postData;
     };
 
