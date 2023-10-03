@@ -37,11 +37,12 @@ module.exports = function (Topics) {
         assert(typeof allTags === 'object', 'allTags must be an array object');
         console.log('printing all tags:', allTags);
 
-        let isExistingTag = false;
+        let isExistingTag = true;
         assert(typeof isExistingTag === 'boolean', 'isExistingTag is a boolean');
         for (let i = 0; i < tags.length; i++) {
             const tagVal = tags[i];
             assert(typeof tagVal === 'string', 'tagVal must be a string');
+            isExistingTag = false;
             for (let j = 0; j < allTags.length; j++) {
                 const allTagVal = allTags[j].value;
                 assert(typeof allTagVal === 'string', 'allTagVal must be a string');
@@ -49,9 +50,9 @@ module.exports = function (Topics) {
                 console.log('allTag val:', allTagVal);
                 if (tagVal === allTagVal) {
                     isExistingTag = true;
-                    break;
                 }
             }
+            if (!isExistingTag) { break; }
         }
 
         try {
