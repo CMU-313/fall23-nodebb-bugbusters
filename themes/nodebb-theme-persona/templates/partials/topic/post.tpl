@@ -24,6 +24,9 @@
                 itemprop="author" 
                 data-username="{posts.user.username}" 
                 data-uid="{posts.user.uid}">{posts.user.displayname}</a>
+                {{{if (posts.user.accounttype == "instructor")}}}
+                    <i component="instructor/icon" class="fa fa-check-circle-o"></i>
+                {{{end}}}
             {{{end}}}
         </strong>
 
