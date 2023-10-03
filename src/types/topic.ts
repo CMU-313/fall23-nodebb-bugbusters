@@ -67,6 +67,7 @@ export type TopicSlimProperties = {
   votes: string;
   teaserPid: number | string;
   thumbs: Thumb[];
+  repliedByInstr: boolean;
 };
 
 export type Thumb = {
