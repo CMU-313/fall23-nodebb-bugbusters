@@ -570,7 +570,7 @@ describe('Upload Controllers', () => {
                 meta.config.orphanExpiryDays = 7;
                 await posts.uploads.cleanOrphans();
                 const orphans = await posts.uploads.getOrphans();
-                console.log('orphans: ', orphans);
+                // console.log('orphans: ', orphans);
                 assert.strictEqual(orphans.length, 0);
             });
 

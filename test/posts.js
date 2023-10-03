@@ -1127,9 +1127,9 @@ describe('Post\'s', () => {
             const oldValue = meta.config.groupsExemptFromPostQueue;
             meta.config.groupsExemptFromPostQueue = ['registered-users'];
             const uid = await user.create({ username: 'mergeexemptuser' });
-            console.log('uid', uid);
+            // console.log('uid', uid);
             const result = await apiTopics.create({ uid: uid, emit: () => {} }, { title: 'should not be queued', content: 'topic content', cid: cid });
-            console.log('result nand its title', result, result.title);
+            // console.log('result nand its title', result, result.title);
             assert.strictEqual(result.title, 'should not be queued');
             meta.config.groupsExemptFromPostQueue = oldValue;
         });
