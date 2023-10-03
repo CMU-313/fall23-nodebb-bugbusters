@@ -22,12 +22,16 @@ Topics.create = async (req, res) => {
     const id = await lockPosting(req, '[[error:already-posting]]');
     try {
         const payload = await api.topics.create(req, req.body);
+        console.log('Topics.create payload:', payload);
         if (payload.queued) {
+            console.log('payload.queued is true');
             helpers.formatApiResponse(202, res, payload);
         } else {
+            console.log('payload.queued = false');
             helpers.formatApiResponse(200, res, payload);
         }
     } finally {
+        console.log('deleting object field locks');
         await db.deleteObjectField('locks', id);
     }
 };

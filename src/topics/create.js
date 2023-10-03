@@ -78,6 +78,7 @@ module.exports = function (Topics) {
     };
 
     Topics.post = async function (data) {
+        console.log('Topics.post in create.js');
         data = await plugins.hooks.fire('filter:topic.post', data);
         const { uid } = data;
 
