@@ -34,10 +34,10 @@ Topics.create = async (req, res) => {
 
 Topics.reply = async (req, res) => {
     const id = await lockPosting(req, '[[error:already-posting]]');
-    console.log('Topics.reply in src/controllers/write: req, res', req, res);
+    // console.log('Topics.reply in src/controllers/write: req, res', req, res);
     try {
         const payload = await api.topics.reply(req, { ...req.body, tid: req.params.tid });
-        console.log('payload in Topics.reply = postObj[0]:', payload);
+        // console.log('payload in Topics.reply = postObj[0]:', payload);
         helpers.formatApiResponse(200, res, payload);
         // Check whether the topic is replied by an instr
         let { uid } = payload;
@@ -48,10 +48,10 @@ Topics.reply = async (req, res) => {
         if (accounttype === 'instructor') {
             await topics.setTopicField(tid, 'repliedByInstr', true);
             const rep = await topics.getTopicField(tid, 'repliedByInstr');
-            console.log('repliedByInstr:', rep);
+            // console.log('repliedByInstr:', rep);
         }
     } finally {
-        console.log('reply finally!');
+        // console.log('reply finally!');
         await db.deleteObjectField('locks', id);
     }
 };
