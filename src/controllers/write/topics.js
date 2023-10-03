@@ -47,7 +47,7 @@ Topics.reply = async (req, res) => {
         const accounttype = await user.getUserField(uid, 'accounttype');
         if (accounttype === 'instructor') {
             await topics.setTopicField(tid, 'repliedByInstr', true);
-            const rep = await topics.getTopicField(tid, 'repliedByInstr');
+            // const rep = await topics.getTopicField(tid, 'repliedByInstr');
             // console.log('repliedByInstr:', rep);
         }
     } finally {
