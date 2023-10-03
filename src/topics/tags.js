@@ -15,7 +15,8 @@ const batch = require('../batch');
 const cache = require('../cache');
 
 module.exports = function (Topics) {
-    Topics.createTags = async function (tags, uid, tid, timestamp) {
+    Topics.createTags = async function (tags, tid, timestamp) {
+        /*
         if (!Array.isArray(tags) || !tags.length) {
             // console.log('Not Array??');
             return;
@@ -24,14 +25,14 @@ module.exports = function (Topics) {
         const accounttype = await user.getUserField(uid, 'accounttype');
         // console.log('accounttype:', accounttype);
         if (typeof accounttype === 'undefined') {
-            // console.log('The user is a guest');
+            console.log('The user is a guest');
         }
         if (uid !== 0) {
-            // console.log('Username: ', user.getUserField(uid, 'username'));
+            console.log('Username: ', user.getUserField(uid, 'username'));
         }
         const isAdmin = await user.isAdministrator(uid);
         assert(typeof isAdmin === 'boolean', 'isAdmin must be a boolean');
-        assert((typeof accounttype === 'string' || typeof accounttype === 'undefined'), 'accounttype must be string or undefined');
+        assert(typeof accounttype === 'string', 'accounttype must be string');
         const allTags = await getAllTags();
         assert(typeof allTags === 'object', 'allTags must be an array object');
         // console.log('printing all tags:', allTags);
@@ -72,7 +73,18 @@ module.exports = function (Topics) {
             // console.error('Unauthorized Tag Creation was stopped');
             throw new Error('As a student you are not authorized to create new tags');
         }
-        //this function return nothing
+        */
+        if (!Array.isArray(tags) || !tags.length) {
+            return;
+        }
+
+        const cid = await Topics.getTopicField(tid, 'cid');
+        const topicSets = tags.map(tag => `tag:${tag}:topics`).concat(
+            tags.map(tag => `cid:${cid}:tag:${tag}:topics`)
+        );
+        await db.sortedSetsAdd(topicSets, timestamp, tid);
+        await Topics.updateCategoryTagsCount([cid], tags);
+        await Promise.all(tags.map(updateTagCount));
     };
 
     Topics.filterTags = async function (tags, cid) {
@@ -110,15 +122,53 @@ module.exports = function (Topics) {
     };
 
     Topics.validateTags = async function (tags, cid, uid, tid = null) {
+        console.log('validating tags');
         if (!Array.isArray(tags)) {
             throw new Error('[[error:invalid-data]]');
         }
         tags = _.uniq(tags);
+
+        console.log('tags are:', tags);
+
+        const isAdmin = await user.isAdministrator(uid);
+        assert(typeof isAdmin === 'boolean', 'isAdmin must be a boolean');
+        const accounttype = await user.getUserField(uid, 'accounttype');
+        assert((typeof accounttype === 'string' || typeof accounttype === 'undefined'), 'accounttype must be string or undefined');
+        const allTags = await getAllTags();
+        assert(typeof allTags === 'object', 'allTags must be an array object');
+        // console.log('printing all tags:', allTags);
+
+        let isExistingTag = true;
+        assert(typeof isExistingTag === 'boolean', 'isExistingTag is a boolean');
+        for (let i = 0; i < tags.length; i++) {
+            const tagVal = tags[i];
+            assert(typeof tagVal === 'string', 'tagVal must be a string');
+            isExistingTag = false;
+            for (let j = 0; j < allTags.length; j++) {
+                const allTagVal = allTags[j].value;
+                assert(typeof allTagVal === 'string', 'allTagVal must be a string');
+                console.log('tag val:', tagVal);
+                console.log('allTag val:', allTagVal);
+                if (tagVal === allTagVal) {
+                    console.log('Thay are equal');
+                    isExistingTag = true;
+                    break;
+                }
+            }
+            if (!isExistingTag) { break; }
+        }
+        console.log('isExistingTag =', isExistingTag);
+        console.log('accounttype =', accounttype, accounttype === 'student');
+        if (accounttype === 'student' && !isExistingTag && !isAdmin) {
+            console.log('throw error when non-admin student trying to create new tag');
+            throw new Error('[[error:no-privileges]]');
+        }
         const [categoryData, isPrivileged, currentTags] = await Promise.all([
             categories.getCategoryFields(cid, ['minTags', 'maxTags']),
             user.isPrivileged(uid),
             tid ? Topics.getTopicTags(tid) : [],
         ]);
+
         if (tags.length < parseInt(categoryData.minTags, 10)) {
             throw new Error(`[[error:not-enough-tags, ${categoryData.minTags}]]`);
         } else if (tags.length > parseInt(categoryData.maxTags, 10)) {
