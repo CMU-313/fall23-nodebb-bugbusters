@@ -36,10 +36,12 @@ describe('Topic\'s', () => {
     let adminJar;
     let csrf_token;
     let fooUid;
+    let studUid;
 
     before(async () => {
         adminUid = await User.create({ username: 'admin', password: '123456' });
         fooUid = await User.create({ username: 'foo', accounttype: 'instructor' });
+        studUid = await User.create({ username: 'stud', ccounttype: 'student' });
         await groups.join('administrators', adminUid);
         const adminLogin = await helpers.loginUser('admin', '123456');
         adminJar = adminLogin.jar;
@@ -113,6 +115,27 @@ describe('Topic\'s', () => {
                 assert.ok(err);
                 done();
             });
+        });
+
+        it('should fail to create new topic with new tag(s) as a non-admin student', (done) => {
+            topics.post(
+                { uid: studUid, tags: ['meow', 'hahaha'], title: topic.title, concent: 'student try creating new tags', cid: topic.categoryId },
+                (err) => {
+                    assert.ok(err);
+                    done();
+                }
+            );
+        });
+
+        it('should return no-privilege error when student tries to create new tags', (done) => {
+            topics.post({ uid: fooUid, tags: ['hw1', 'hw2', 'hw3', 'hw4', 'exams'], title: 'Instr Tags', content: 'instr creates new tags', cid: topic.categoryId });
+            topics.post(
+                { uid: studUid, tags: ['hw1', 'hw2', 'studnewtag'], title: 'create new tags', content: 'student try creating new tags', cid: topic.categoryId },
+                (err) => {
+                    assert.equal(err.message, '[[error:no-privileges]]');
+                    done();
+                }
+            );
         });
 
         it('should fail to create new topic with non-existant category id', (done) => {
@@ -270,9 +293,49 @@ describe('Topic\'s', () => {
             topics.reply({ uid: topic.userId, content: 'test post', tid: newTopic.tid }, (err, result) => {
                 assert.equal(err, null, 'was created with error');
                 assert.ok(result);
-
                 done();
             });
+        });
+
+        it('should show i tag after instructor replies to the topic', async () => {
+            console.log('THIS IS THE TEST#############################################');
+            /*
+            topics.post({
+                uid: studUid,
+                title: 'student topic',
+                content: 'main post',
+                cid: topic.categoryId,
+            }, (err, result) => {
+                assert.ifError(err);
+                assert(result);
+                newTopic.tid = result.topicData.tid;
+                topics.reply({ uid: adminUid, content: 'admin reply', tid: newTopic.tid }, (err, result) => {
+                    assert.equal(err, null, 'was created with error');
+                    assert.ok(result);
+                    const res = topics.getTopicField(newTopic.tid, 'repliedByInstr');
+                    assert.strictEqual(topics.getTopicField(newTopic.tid, 'repliedByInstr'), null);
+                });
+                topics.reply({ uid: fooUid, content: 'instr reply', tid: newTopic.tid }, (err, result) => {
+                    assert.equal(err, null, 'was created with error');
+                    assert.ok(result);
+                    assert.strictEqual(topics.getTopicField(newTopic.tid, 'repliedByInstr'), true);
+                    done();
+                });
+            }); */
+            const result = await topics.post({ uid: studUid, title: 'student topic', content: 'main post', cid: topic.categoryId });
+            // console.log('\nresult.topicData', result.topicData);
+            console.log('the result:', result);
+            const { tid } = result.topicData;
+            console.log('ATTENTION: result.topicData.tid =', tid);
+            const reply1 = await topics.reply({ uid: adminUid, content: 'admin reply post 1', tid: tid });
+            console.log('reply1 tid:', reply1.tid);
+            let repliedByInstr = await topics.getTopicField(tid, 'repliedByInstr');
+            assert.strictEqual(repliedByInstr, null);
+            const reply2 = await topics.reply({ uid: fooUid, content: 'instr reply post 2', tid: tid, toPid: reply1.pid });
+            console.log('reply2 tid:', reply2.tid);
+            console.log('THe END--------------------------------------------');
+            repliedByInstr = await topics.getTopicField(tid, 'repliedByInstr');
+            assert.strictEqual(repliedByInstr, 'true');
         });
 
         it('should handle direct replies', (done) => {
