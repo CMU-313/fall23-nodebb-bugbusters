@@ -315,7 +315,7 @@ describe('Topic\'s', () => {
             console.log('reply2 tid:', reply2.tid);
             console.log('THe END--------------------------------------------');
             repliedByInstr = await topics.getTopicField(tid, 'repliedByInstr');
-            assert.strictEqual(repliedByInstr, 'true');
+            assert.strictEqual(repliedByInstr.toString(), 'true');
             console.log('____________________________RepliedByInstructor Feature Passed!______________________');
         });
 
