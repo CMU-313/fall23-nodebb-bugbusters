@@ -98,6 +98,7 @@ topicsAPI.reply = async function (caller, data) {
     socketHelpers.notifyNew(caller.uid, 'newPost', result);
     // console.log('returning postObj[0] and uid:', postObj[0], postObj[0].uid);
     const res = postObj[0];
+    /*
     const { uid, tid } = res;
     console.log('Api>>>Topics.reply uid, tid:', uid, tid);
     const accounttype = await user.getUserField(uid, 'accounttype');
@@ -106,6 +107,7 @@ topicsAPI.reply = async function (caller, data) {
         const rep = await topics.getTopicField(tid, 'repliedByInstr');
         console.log('repliedByInstr:', rep);
     }
+    */
     return res;
 };
 
