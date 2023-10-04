@@ -47,7 +47,7 @@ Topics.reply = async (req, res) => {
         helpers.formatApiResponse(200, res, payload);
         // Check whether the topic is replied by an instr
         const { uid, tid } = payload; // object destruction
-        console.log('Topics.reply uid, tid:', uid, tid);
+        console.log('Constrollers>>>Topics.reply uid, tid:', uid, tid);
         const accounttype = await user.getUserField(uid, 'accounttype');
         console.log('accounttype is:', accounttype);
         if (accounttype === 'instructor') {

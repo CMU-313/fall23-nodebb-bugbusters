@@ -99,7 +99,7 @@ topicsAPI.reply = async function (caller, data) {
     // console.log('returning postObj[0] and uid:', postObj[0], postObj[0].uid);
     const res = postObj[0];
     const { uid, tid } = res;
-    console.log('Topics.reply uid, tid:', uid, tid);
+    console.log('Api>>>Topics.reply uid, tid:', uid, tid);
     const accounttype = await user.getUserField(uid, 'accounttype');
     if (accounttype === 'instructor') {
         await topics.setTopicField(tid, 'repliedByInstr', true);

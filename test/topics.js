@@ -118,6 +118,7 @@ describe('Topic\'s', () => {
         });
 
         it('should fail to create new topic with new tag(s) as a non-admin student', (done) => {
+            console.log('###########################Testing No-Student-Can-Create-New-Tag-Feature###########################');
             topics.post(
                 { uid: studUid, tags: ['meow', 'hahaha'], title: topic.title, concent: 'student try creating new tags', cid: topic.categoryId },
                 (err) => {
@@ -125,9 +126,11 @@ describe('Topic\'s', () => {
                     done();
                 }
             );
+            console.log('___________________________No-Student-Can-Create-New-Tag test passed!_______________________');
         });
 
         it('should return no-privilege error when student tries to create new tags', (done) => {
+            console.log('###########################Testing No-Student-Can-Create-New-Tag-Feature###########################');
             topics.post({ uid: fooUid, tags: ['hw1', 'hw2', 'hw3', 'hw4', 'exams'], title: 'Instr Tags', content: 'instr creates new tags', cid: topic.categoryId });
             topics.post(
                 { uid: studUid, tags: ['hw1', 'hw2', 'studnewtag'], title: 'create new tags', content: 'student try creating new tags', cid: topic.categoryId },
@@ -136,6 +139,7 @@ describe('Topic\'s', () => {
                     done();
                 }
             );
+            console.log('___________________________No-Student-Can-Create-New-Tag test passed!_______________________');
         });
 
         it('should fail to create new topic with non-existant category id', (done) => {
@@ -298,32 +302,8 @@ describe('Topic\'s', () => {
         });
 
         it('should show i tag after instructor replies to the topic', async () => {
-            console.log('THIS IS THE TEST#############################################');
-            /*
-            topics.post({
-                uid: studUid,
-                title: 'student topic',
-                content: 'main post',
-                cid: topic.categoryId,
-            }, (err, result) => {
-                assert.ifError(err);
-                assert(result);
-                newTopic.tid = result.topicData.tid;
-                topics.reply({ uid: adminUid, content: 'admin reply', tid: newTopic.tid }, (err, result) => {
-                    assert.equal(err, null, 'was created with error');
-                    assert.ok(result);
-                    const res = topics.getTopicField(newTopic.tid, 'repliedByInstr');
-                    assert.strictEqual(topics.getTopicField(newTopic.tid, 'repliedByInstr'), null);
-                });
-                topics.reply({ uid: fooUid, content: 'instr reply', tid: newTopic.tid }, (err, result) => {
-                    assert.equal(err, null, 'was created with error');
-                    assert.ok(result);
-                    assert.strictEqual(topics.getTopicField(newTopic.tid, 'repliedByInstr'), true);
-                    done();
-                });
-            }); */
+            console.log('#####################Testing RepliedByInstructor Label Feature########################');
             const result = await topics.post({ uid: studUid, title: 'student topic', content: 'main post', cid: topic.categoryId });
-            // console.log('\nresult.topicData', result.topicData);
             console.log('the result:', result);
             const { tid } = result.topicData;
             console.log('ATTENTION: result.topicData.tid =', tid);
@@ -336,6 +316,7 @@ describe('Topic\'s', () => {
             console.log('THe END--------------------------------------------');
             repliedByInstr = await topics.getTopicField(tid, 'repliedByInstr');
             assert.strictEqual(repliedByInstr, 'true');
+            console.log('____________________________RepliedByInstructor Feature Passed!______________________');
         });
 
         it('should handle direct replies', (done) => {
