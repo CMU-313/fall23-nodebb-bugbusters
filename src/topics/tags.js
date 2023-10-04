@@ -16,64 +16,6 @@ const cache = require('../cache');
 
 module.exports = function (Topics) {
     Topics.createTags = async function (tags, tid, timestamp) {
-        /*
-        if (!Array.isArray(tags) || !tags.length) {
-            // console.log('Not Array??');
-            return;
-        }
-        // console.log('Topics.createTags: tags, uid, tid, timestamp', tags, uid, tid, timestamp);
-        const accounttype = await user.getUserField(uid, 'accounttype');
-        // console.log('accounttype:', accounttype);
-        if (typeof accounttype === 'undefined') {
-            console.log('The user is a guest');
-        }
-        if (uid !== 0) {
-            console.log('Username: ', user.getUserField(uid, 'username'));
-        }
-        const isAdmin = await user.isAdministrator(uid);
-        assert(typeof isAdmin === 'boolean', 'isAdmin must be a boolean');
-        assert(typeof accounttype === 'string', 'accounttype must be string');
-        const allTags = await getAllTags();
-        assert(typeof allTags === 'object', 'allTags must be an array object');
-        // console.log('printing all tags:', allTags);
-
-        let isExistingTag = true;
-        assert(typeof isExistingTag === 'boolean', 'isExistingTag is a boolean');
-        for (let i = 0; i < tags.length; i++) {
-            let tagVal = tags[i];
-            assert(typeof tagVal === 'string', 'tagVal must be a string');
-            isExistingTag = false;
-            for (let j = 0; j < allTags.length; j++) {
-                let allTagVal = allTags[j].value;
-                assert(typeof allTagVal === 'string', 'allTagVal must be a string');
-                // console.log('tag val:', tagVal);
-                // console.log('allTag val:', allTagVal);
-                if (tagVal === allTagVal) {
-                    isExistingTag = true;
-                }
-            }
-            if (!isExistingTag) { break; }
-        }
-
-        try {
-            // When non-admin student tries to create new tags
-            if ((accounttype === 'student') && !isExistingTag && !isAdmin) {
-                // console.log('reaching here?');
-                throw new Error('You are not authorized to create new tags!');
-            }   
-            const cid = await Topics.getTopicField(tid, 'cid');
-            const topicSets = tags.map(tag => `tag:${tag}:topics`).concat(
-                tags.map(tag => `cid:${cid}:tag:${tag}:topics`)
-            );
-            // console.log('New topic with this tag can be posted.');
-            await db.sortedSetsAdd(topicSets, timestamp, tid);
-            await Topics.updateCategoryTagsCount([cid], tags);
-            await Promise.all(tags.map(updateTagCount));
-        } catch (error) {
-            // console.error('Unauthorized Tag Creation was stopped');
-            throw new Error('As a student you are not authorized to create new tags');
-        }
-        */
         if (!Array.isArray(tags) || !tags.length) {
             return;
         }

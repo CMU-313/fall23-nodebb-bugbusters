@@ -78,7 +78,7 @@ module.exports = function (Topics) {
     };
 
     Topics.post = async function (data) {
-        console.log('Topics.post in create.js, data =', data);
+        console.log('Topics.post in create.js starts');
         data = await plugins.hooks.fire('filter:topic.post', data);
         const { uid } = data;
         data.title = String(data.title).trim();
@@ -157,7 +157,7 @@ module.exports = function (Topics) {
     };
 
     Topics.reply = async function (data) {
-        console.log('Topics.reply in create.js data=', data);
+        console.log('Topics.reply in create.js starts');
         data = await plugins.hooks.fire('filter:topic.reply', data);
         const { tid } = data;
         const { uid } = data;
@@ -211,7 +211,7 @@ module.exports = function (Topics) {
         console.log('Topics.reply in create.js postData[tid]: ', postData.tid);
 
         // Added lines
-        console.log('Topics.reply uid, tid in create.js:', uid, tid);
+        console.log('topics/create.js>>>Topics.reply uid, tid:', uid, tid);
         const accounttype = await user.getUserField(uid, 'accounttype');
         if (accounttype === 'instructor') {
             await Topics.setTopicField(tid, 'repliedByInstr', true);
