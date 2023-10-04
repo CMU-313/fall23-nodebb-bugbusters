@@ -70,8 +70,7 @@ module.exports = function (Topics) {
         }
         tags = _.uniq(tags);
 
-        // console.log('tags are:', tags);
-
+        // Implement Student-Cannot-Create-New-Tags Feature
         const isAdmin = await user.isAdministrator(uid);
         assert(typeof isAdmin === 'boolean', 'isAdmin must be a boolean');
         const accounttype = await user.getUserField(uid, 'accounttype');
@@ -105,6 +104,8 @@ module.exports = function (Topics) {
             // console.log('throw error when non-admin student trying to create new tag');
             throw new Error('[[error:no-privileges]]');
         }
+        // The End of Implementation
+
         const [categoryData, isPrivileged, currentTags] = await Promise.all([
             categories.getCategoryFields(cid, ['minTags', 'maxTags']),
             user.isPrivileged(uid),
