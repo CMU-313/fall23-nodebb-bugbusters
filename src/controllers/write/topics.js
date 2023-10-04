@@ -2,7 +2,7 @@
 
 
 const validator = require('validator');
-const user = require('../../user');
+// const user = require('../../user');
 const db = require('../../database');
 const api = require('../../api');
 const topics = require('../../topics');
@@ -46,6 +46,7 @@ Topics.reply = async (req, res) => {
         // console.log('payload in Topics.reply = postObj[0]:', payload);
         helpers.formatApiResponse(200, res, payload);
         // Check whether the topic is replied by an instr
+        /*
         const { uid, tid } = payload; // object destruction
         console.log('Constrollers>>>Topics.reply uid, tid:', uid, tid);
         const accounttype = await user.getUserField(uid, 'accounttype');
@@ -55,6 +56,7 @@ Topics.reply = async (req, res) => {
             const rep = await topics.getTopicField(tid, 'repliedByInstr');
             console.log('repliedByInstr:', rep);
         }
+        */
     } finally {
         console.log('reply finally!');
         await db.deleteObjectField('locks', id);
