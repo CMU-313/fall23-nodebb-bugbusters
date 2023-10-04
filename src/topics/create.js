@@ -78,10 +78,9 @@ module.exports = function (Topics) {
     };
 
     Topics.post = async function (data) {
-        console.log('Topics.post in create.js');
+        console.log('Topics.post in create.js, data =', data);
         data = await plugins.hooks.fire('filter:topic.post', data);
         const { uid } = data;
-
         data.title = String(data.title).trim();
         data.tags = data.tags || [];
         if (data.content) {
@@ -150,7 +149,7 @@ module.exports = function (Topics) {
         if (parseInt(uid, 10) && !topicData.scheduled) {
             user.notifications.sendTopicNotificationToFollowers(uid, topicData, postData);
         }
-
+        console.log('Topics.post in create.js return topicData uid, tid=', topicData.uid, topicData.tid);
         return {
             topicData: topicData,
             postData: postData,
@@ -158,7 +157,7 @@ module.exports = function (Topics) {
     };
 
     Topics.reply = async function (data) {
-        // console.log('Topics.reply in src/topics/create.js');
+        console.log('Topics.reply in create.js data=', data);
         data = await plugins.hooks.fire('filter:topic.reply', data);
         const { tid } = data;
         const { uid } = data;
@@ -209,7 +208,18 @@ module.exports = function (Topics) {
 
         analytics.increment(['posts', `posts:byCid:${data.cid}`]);
         plugins.hooks.fire('action:topic.reply', { post: _.clone(postData), data: data });
-        // console.log('postData: ', postData);
+        console.log('Topics.reply in create.js postData[tid]: ', postData.tid);
+
+        // Added lines
+        console.log('Topics.reply uid, tid in create.js:', uid, tid);
+        const accounttype = await user.getUserField(uid, 'accounttype');
+        if (accounttype === 'instructor') {
+            await Topics.setTopicField(tid, 'repliedByInstr', true);
+            const rep = await Topics.getTopicField(tid, 'repliedByInstr');
+            console.log('repliedByInstr:', rep);
+        }
+        // Added lines
+
         return postData;
     };
 

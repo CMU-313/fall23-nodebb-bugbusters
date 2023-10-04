@@ -22,7 +22,7 @@ Topics.create = async (req, res) => {
     const id = await lockPosting(req, '[[error:already-posting]]');
     try {
         const payload = await api.topics.create(req, req.body);
-        console.log('Topics.create payload:', payload);
+        console.log('Topics.create payload------------------------------------');
         if (payload.queued) {
             console.log('payload.queued is true');
             helpers.formatApiResponse(202, res, payload);
@@ -38,24 +38,25 @@ Topics.create = async (req, res) => {
 
 Topics.reply = async (req, res) => {
     const id = await lockPosting(req, '[[error:already-posting]]');
+    console.log('in controllers/write Topics.reply');
     // console.log('Topics.reply in src/controllers/write: req, res', req, res);
     try {
         const payload = await api.topics.reply(req, { ...req.body, tid: req.params.tid });
+        console.log('continue controllers/write Topics.reply after api.topics.reply');
         // console.log('payload in Topics.reply = postObj[0]:', payload);
         helpers.formatApiResponse(200, res, payload);
         // Check whether the topic is replied by an instr
-        let { uid } = payload;
-        uid = payload.uid;
-        let { tid } = payload;
-        tid = payload.tid;
+        const { uid, tid } = payload; // object destruction
+        console.log('Topics.reply uid, tid:', uid, tid);
         const accounttype = await user.getUserField(uid, 'accounttype');
+        console.log('accounttype is:', accounttype);
         if (accounttype === 'instructor') {
             await topics.setTopicField(tid, 'repliedByInstr', true);
-            // const rep = await topics.getTopicField(tid, 'repliedByInstr');
-            // console.log('repliedByInstr:', rep);
+            const rep = await topics.getTopicField(tid, 'repliedByInstr');
+            console.log('repliedByInstr:', rep);
         }
     } finally {
-        // console.log('reply finally!');
+        console.log('reply finally!');
         await db.deleteObjectField('locks', id);
     }
 };

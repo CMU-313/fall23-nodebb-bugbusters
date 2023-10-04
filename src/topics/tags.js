@@ -122,13 +122,13 @@ module.exports = function (Topics) {
     };
 
     Topics.validateTags = async function (tags, cid, uid, tid = null) {
-        console.log('validating tags');
+        // console.log('validating tags');
         if (!Array.isArray(tags)) {
             throw new Error('[[error:invalid-data]]');
         }
         tags = _.uniq(tags);
 
-        console.log('tags are:', tags);
+        // console.log('tags are:', tags);
 
         const isAdmin = await user.isAdministrator(uid);
         assert(typeof isAdmin === 'boolean', 'isAdmin must be a boolean');
@@ -147,20 +147,20 @@ module.exports = function (Topics) {
             for (let j = 0; j < allTags.length; j++) {
                 const allTagVal = allTags[j].value;
                 assert(typeof allTagVal === 'string', 'allTagVal must be a string');
-                console.log('tag val:', tagVal);
-                console.log('allTag val:', allTagVal);
+                // console.log('tag val:', tagVal);
+                // console.log('allTag val:', allTagVal);
                 if (tagVal === allTagVal) {
-                    console.log('Thay are equal');
+                    // console.log('Thay are equal');
                     isExistingTag = true;
                     break;
                 }
             }
             if (!isExistingTag) { break; }
         }
-        console.log('isExistingTag =', isExistingTag);
-        console.log('accounttype =', accounttype, accounttype === 'student');
+        // console.log('isExistingTag =', isExistingTag);
+        // console.log('accounttype =', accounttype, accounttype === 'student');
         if (accounttype === 'student' && !isExistingTag && !isAdmin) {
-            console.log('throw error when non-admin student trying to create new tag');
+            // console.log('throw error when non-admin student trying to create new tag');
             throw new Error('[[error:no-privileges]]');
         }
         const [categoryData, isPrivileged, currentTags] = await Promise.all([

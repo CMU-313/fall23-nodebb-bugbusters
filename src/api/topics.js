@@ -66,7 +66,7 @@ topicsAPI.create = async function (caller, data) {
 };
 
 topicsAPI.reply = async function (caller, data) {
-    // console.log('topicsAPI.reply(caller*, data)', caller);
+    console.log('topicsAPI.reply(caller*, data)');
     if (!data || !data.tid || (meta.config.minimumPostLength !== 0 && !data.content)) {
         throw new Error('[[error:invalid-data]]');
     }
@@ -97,7 +97,16 @@ topicsAPI.reply = async function (caller, data) {
 
     socketHelpers.notifyNew(caller.uid, 'newPost', result);
     // console.log('returning postObj[0] and uid:', postObj[0], postObj[0].uid);
-    return postObj[0];
+    const res = postObj[0];
+    const { uid, tid } = res;
+    console.log('Topics.reply uid, tid:', uid, tid);
+    const accounttype = await user.getUserField(uid, 'accounttype');
+    if (accounttype === 'instructor') {
+        await topics.setTopicField(tid, 'repliedByInstr', true);
+        const rep = await topics.getTopicField(tid, 'repliedByInstr');
+        console.log('repliedByInstr:', rep);
+    }
+    return res;
 };
 
 topicsAPI.delete = async function (caller, data) {

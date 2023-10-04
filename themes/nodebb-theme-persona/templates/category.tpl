@@ -7,6 +7,7 @@
 <div class="row">
     <div class="category <!-- IF widgets.sidebar.length -->col-lg-9 col-sm-12<!-- ELSE -->col-lg-12<!-- ENDIF widgets.sidebar.length -->">
         <!-- IMPORT partials/category/subcategory.tpl -->
+
         <div class="topic-list-header clearfix">
             <!-- IF privileges.topics:create -->
             <a href="{config.relative_path}/compose?cid={cid}" component="category/post" id="new_topic" class="btn btn-primary" data-ajaxify="false" role="button">[[category:new_topic_button]]</a>
@@ -26,7 +27,6 @@
                 <!-- IMPORT partials/category/tools.tpl -->
             </span>
         </div>
-        <h2>Posts</h2>
 
         <!-- IF !topics.length -->
         <!-- IF privileges.topics:create -->
@@ -36,24 +36,6 @@
         </div>
         <!-- ENDIF privileges.topics:create -->
         <!-- ENDIF !topics.length -->
-
-        <!-- IMPORT partials/topics_list.tpl -->
-
-        <!-- IF config.usePagination -->
-            <!-- IMPORT partials/paginator.tpl -->
-        <!-- ENDIF config.usePagination -->
-    </div>
-    <div data-widget-area="sidebar" class="col-lg-3 col-sm-12 <!-- IF !widgets.sidebar.length -->hidden<!-- ENDIF !widgets.sidebar.length -->">
-        {{{each widgets.sidebar}}}
-        {{widgets.sidebar.html}}
-        {{{end}}}
-    </div>
-</div>
-
-<h2>Archived</h2>
-<div class="row">
-    <div class="category <!-- IF widgets.sidebar.length -->col-lg-9 col-sm-12<!-- ELSE -->col-lg-12<!-- ENDIF widgets.sidebar.length -->">
-        <!-- IMPORT partials/category/subcategory.tpl -->
 
         <!-- IMPORT partials/topics_list.tpl -->
 
