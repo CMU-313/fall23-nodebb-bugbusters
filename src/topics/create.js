@@ -210,15 +210,16 @@ module.exports = function (Topics) {
         plugins.hooks.fire('action:topic.reply', { post: _.clone(postData), data: data });
         console.log('Topics.reply in create.js postData[tid]: ', postData.tid);
 
-        // Added lines
-        console.log('topics/create.js>>>Topics.reply uid, tid:', uid, tid);
+        // Implement TopicRepliedByInstructor Identification Feature
+        // console.log('topics/create.js>>>Topics.reply uid, tid:', uid, tid);
         const accounttype = await user.getUserField(uid, 'accounttype');
+        assert((typeof accounttype === 'string' || typeof accounttype === 'undefined'), 'accounttype must be string or undefined');
         if (accounttype === 'instructor') {
             await Topics.setTopicField(tid, 'repliedByInstr', true);
-            const rep = await Topics.getTopicField(tid, 'repliedByInstr');
-            console.log('repliedByInstr:', rep);
+            // const rep = await Topics.getTopicField(tid, 'repliedByInstr');
+            // console.log('repliedByInstr:', rep);
         }
-        // Added lines
+        // The end of implementation
 
         return postData;
     };
