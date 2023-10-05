@@ -15,6 +15,9 @@
                         <i class="fa fa-arrow-circle-right <!-- IF !oldCid -->hidden<!-- ENDIF !oldCid -->" title="{{{ if privileges.isAdminOrMod }}}[[topic:moved-from, {oldCategory.name}]]{{{ else }}}[[topic:moved]]{{{ end }}}"></i>
                         {{{each icons}}}{@value}{{{end}}}
                     </span>
+                    <!-- IF repliedByInstr -->
+                    <span class="tag label label-info" style="background-color:gold;">i</span>
+                    <!-- ENDIF repliedByInstr --> 
                     <span component="topic/title">{title}</span>
                 </span>
             </h1>
