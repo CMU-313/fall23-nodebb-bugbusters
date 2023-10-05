@@ -16,6 +16,7 @@ const batch = require('../batch');
 const cache = require('../cache');
 
 module.exports = function (Topics) {
+    // NOTE: uid should not be a parameter of Topics.createdTags!!!!!!!!!!!
     Topics.createTags = async function (tags, tid, timestamp) {
         if (!Array.isArray(tags) || !tags.length) {
             return;
