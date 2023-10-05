@@ -69,6 +69,7 @@ module.exports = function (Topics) {
             Topics.createTags(data.tags, topicData.tid, timestamp),
             scheduled ? Promise.resolve() : categories.updateRecentTid(topicData.cid, topicData.tid),
         ]);
+        // NOTE: topicData.uid is not needed for Topics.createdTags!!!!!!!!!!!
         if (scheduled) {
             await Topics.scheduled.pin(tid, topicData);
         }
