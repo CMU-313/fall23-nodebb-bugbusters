@@ -120,7 +120,7 @@ describe('Topic\'s', () => {
         it('should fail to create new topic with new tag(s) as a non-admin student', (done) => {
             console.log('###########################Testing No-Student-Can-Create-New-Tag-Feature###########################');
             topics.post(
-                { uid: studUid, tags: ['meow', 'hahaha'], title: topic.title, concent: 'student try creating new tags', cid: topic.categoryId },
+                { uid: studUid, tags: ['meow', 'aceThisClass', 'newTag', 'ProCoder', 'drinkJava', 'sleepy'], title: topic.title, concent: 'student try creating new tags', cid: topic.categoryId },
                 (err) => {
                     assert.ok(err);
                     done();
@@ -129,11 +129,11 @@ describe('Topic\'s', () => {
             console.log('___________________________No-Student-Can-Create-New-Tag test passed!_______________________');
         });
 
-        it('should return no-privilege error when student tries to create new tags', (done) => {
+        it('should return no-privilege error when student tries to post with new tags', (done) => {
             console.log('###########################Testing No-Student-Can-Create-New-Tag-Feature###########################');
-            topics.post({ uid: fooUid, tags: ['hw1', 'hw2', 'hw3', 'hw4', 'exams'], title: 'Instr Tags', content: 'instr creates new tags', cid: topic.categoryId });
+            topics.post({ uid: fooUid, tags: ['hw1', 'hw2', 'hw3', 'hw4', 'exams'], title: 'Instr Post', content: 'instr creates new tags', cid: topic.categoryId });
             topics.post(
-                { uid: studUid, tags: ['hw1', 'hw2', 'studnewtag'], title: 'create new tags', content: 'student try creating new tags', cid: topic.categoryId },
+                { uid: studUid, tags: ['hw1', 'hw2', 'hwSolutions', 'catVideos'], title: 'Student Post', content: 'student tries to create new tags', cid: topic.categoryId },
                 (err) => {
                     assert.equal(err.message, '[[error:no-privileges]]');
                     done();
@@ -301,21 +301,23 @@ describe('Topic\'s', () => {
             });
         });
 
-        it('should show i tag after instructor replies to the topic', async () => {
+        it('should set a topic\'s repliedByInstr property to true only after an instructor replies to it', async () => {
             console.log('#####################Testing RepliedByInstructor Label Feature########################');
             const result = await topics.post({ uid: studUid, title: 'student topic', content: 'main post', cid: topic.categoryId });
-            console.log('the result:', result);
+            // console.log('the result:', result);
             const { tid } = result.topicData;
-            console.log('ATTENTION: result.topicData.tid =', tid);
-            const reply1 = await topics.reply({ uid: adminUid, content: 'admin reply post 1', tid: tid });
-            console.log('reply1 tid:', reply1.tid);
+            // console.log('ATTENTION: result.topicData.tid =', tid);
+            await topics.reply({ uid: studUid, content: 'student reply', tid: tid });
             let repliedByInstr = await topics.getTopicField(tid, 'repliedByInstr');
-            assert.strictEqual(repliedByInstr, null);
-            const reply2 = await topics.reply({ uid: fooUid, content: 'instr reply post 2', tid: tid, toPid: reply1.pid });
-            console.log('reply2 tid:', reply2.tid);
-            console.log('THe END--------------------------------------------');
+            assert.strictEqual(repliedByInstr, null); // If a student replies, nothing happens
+            await topics.reply({ uid: adminUid, content: 'admin reply', tid: tid });
+            // console.log('reply1 tid:', reply1.tid);
             repliedByInstr = await topics.getTopicField(tid, 'repliedByInstr');
-            assert.strictEqual(repliedByInstr.toString(), 'true');
+            assert.strictEqual(repliedByInstr, null); // If an admin replies, nothing happens
+            await topics.reply({ uid: fooUid, content: 'instr reply', tid: tid, toPid: reply1.pid });
+            // console.log('reply2 tid:', reply2.tid);
+            repliedByInstr = await topics.getTopicField(tid, 'repliedByInstr');
+            assert.strictEqual(repliedByInstr.toString(), 'true'); // If an instr replies, the topics's repliedByInstr property will be set to true
             console.log('____________________________RepliedByInstructor Feature Passed!______________________');
         });
 
