@@ -118,7 +118,7 @@ module.exports = function (Posts) {
         }
 
         let orphans = await Posts.uploads.getOrphans();
-        console.log('orphans are:', orphans);
+        // console.log('orphans are:', orphans);
         orphans = await Promise.all(orphans.map(async (relPath) => {
             const { mtimeMs } = await fs.stat(_getFullPath(relPath));
             return mtimeMs < expiration ? relPath : null;

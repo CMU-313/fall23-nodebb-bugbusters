@@ -79,7 +79,7 @@ module.exports = function (Topics) {
     };
 
     Topics.post = async function (data) {
-        console.log('Topics.post in create.js starts');
+        // console.log('Topics.post in create.js starts');
         data = await plugins.hooks.fire('filter:topic.post', data);
         const { uid } = data;
         data.title = String(data.title).trim();
@@ -150,7 +150,7 @@ module.exports = function (Topics) {
         if (parseInt(uid, 10) && !topicData.scheduled) {
             user.notifications.sendTopicNotificationToFollowers(uid, topicData, postData);
         }
-        console.log('Topics.post in create.js return topicData uid, tid=', topicData.uid, topicData.tid);
+        // console.log('Topics.post in create.js return topicData uid, tid=', topicData.uid, topicData.tid);
         return {
             topicData: topicData,
             postData: postData,
@@ -158,7 +158,7 @@ module.exports = function (Topics) {
     };
 
     Topics.reply = async function (data) {
-        console.log('Topics.reply in create.js starts');
+        // console.log('Topics.reply in create.js starts');
         data = await plugins.hooks.fire('filter:topic.reply', data);
         const { tid } = data;
         const { uid } = data;
@@ -209,7 +209,7 @@ module.exports = function (Topics) {
 
         analytics.increment(['posts', `posts:byCid:${data.cid}`]);
         plugins.hooks.fire('action:topic.reply', { post: _.clone(postData), data: data });
-        console.log('Topics.reply in create.js postData[tid]: ', postData.tid);
+        // console.log('Topics.reply in create.js postData[tid]: ', postData.tid);
 
         // Implement TopicRepliedByInstructor Identification Feature
         // console.log('topics/create.js>>>Topics.reply uid, tid:', uid, tid);
