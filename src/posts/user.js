@@ -3,6 +3,7 @@
 const async = require('async');
 const validator = require('validator');
 const _ = require('lodash');
+const assert = require('assert');
 
 const db = require('../database');
 const user = require('../user');
