@@ -100,6 +100,11 @@ module.exports = function (Posts) {
         return groupsMap;
     }
 
+    // Input:
+    // - uids: An array of user IDs to fetch data for.
+    // - uid: The target user ID for whom additional data is needed.
+    // Output:
+    // - A promise that resolves to an array of user data objects with specified fields.
     async function getUserData(uids, uid) {
         const fields = [
             'uid', 'username', 'fullname', 'userslug',
