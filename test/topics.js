@@ -314,7 +314,7 @@ describe('Topic\'s', () => {
             // console.log('reply1 tid:', reply1.tid);
             repliedByInstr = await topics.getTopicField(tid, 'repliedByInstr');
             assert.strictEqual(repliedByInstr, null); // If an admin replies, nothing happens
-            await topics.reply({ uid: fooUid, content: 'instr reply', tid: tid, toPid: reply1.pid });
+            await topics.reply({ uid: fooUid, content: 'instr reply', tid: tid });
             // console.log('reply2 tid:', reply2.tid);
             repliedByInstr = await topics.getTopicField(tid, 'repliedByInstr');
             assert.strictEqual(repliedByInstr.toString(), 'true'); // If an instr replies, the topics's repliedByInstr property will be set to true
