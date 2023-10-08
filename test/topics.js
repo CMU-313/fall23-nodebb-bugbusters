@@ -88,7 +88,93 @@ describe('Topic\'s', () => {
         });
     });
 
+    describe('Create New Tag Feature', () => {
+
+        it('should successfully create a new topic with new tags as an instructor', async () => {
+            try {
+                await topics.post({ 
+                    uid: instructorUid, 
+                    tags: ['hw1', 'hw2', 'hw3', 'hw4', 'exams'], 
+                    title: 'Instr Post', 
+                    content: 'instructor creates new tags', 
+                    cid: topic.categoryId 
+                });
+            } catch (err) {
+                assert.fail('Instructor should be able to create new tags');
+            }
+        });
+
+        it('should successfully create a new topic with new tags as an admin', async () => {
+            try {
+                await topics.post({
+                    uid: adminUid,
+                    tags: ['newAdminTag1', 'newAdminTag2'],
+                    title: 'Admin Post',
+                    content: 'An admin creating a post with new tags.',
+                    cid: topic.categoryId
+                });
+            } catch (err) {
+                assert.fail('Admin should be able to create new tags');
+            }
+        });
+
+        it('should fail to create a new topic with new tags as a student', async () => {
+            
+            try {
+                await topics.post({
+                    uid: studentUid,
+                    tags: ['newTag1', 'newTag2'],
+                    title: 'Student Post',
+                    content: 'A student trying to create a post with new tags.',
+                    cid: topic.categoryId
+                });
+                assert.fail('Student should not be able to create new tags');
+            } catch (err) {
+                assert.ok(err);
+            }
+        });
+
+        it('should fail to create a new topic with new tags as a non-admin student', async () => {
+
+            try {
+                await topics.post({ 
+                    uid: studentUid, 
+                    tags: ['meow', 'aceThisClass', 'newTag', 'ProCoder', 'drinkJava', 'sleepy'], 
+                    title: topic.title, 
+                    content: 'student try creating new tags', 
+                    cid: topic.categoryId 
+                });
+                assert.fail('Student should not be able to create new tags');
+            } catch (err) {
+                assert.ok(err);
+            }
+        });
     
+        it('no-privilege error when a student tries create new tags', async () => {
+    
+            await topics.post({ 
+                uid: instructorUid, 
+                tags: ['hw1', 'hw2', 'hw3', 'hw4', 'exams'], 
+                title: 'Instr Post', 
+                content: 'instr creates new tags', 
+                cid: topic.categoryId 
+            });
+    
+            try {
+                await topics.post({ 
+                    uid: studentUid, 
+                    tags: ['hw1', 'hw2', 'hwSolutions', 'catVideos'], 
+                    title: 'Student Post', 
+                    content: 'student tries to create new tags', 
+                    cid: topic.categoryId 
+                });
+                assert.fail('Student should not be able to create new tags');
+            } catch (err) {
+                assert.equal(err.message, '[[error:no-privileges]]');
+            }
+        });
+
+    });    
 
     describe('.post', () => {
         it('should fail to create topic with invalid data', async () => {
