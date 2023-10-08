@@ -66,38 +66,37 @@ describe('Topic\'s', () => {
             const { tid } = result.topicData;
             await topics.reply({ uid: studentUid, content: 'student reply', tid: tid });
             const repliedByInstr = await topics.getTopicField(tid, 'repliedByInstr');
-            assert.strictEqual(repliedByInstr, null); 
+            assert.strictEqual(repliedByInstr, null);
         });
-        
+
         // If an admin replies, nothing happens
         it('should not set repliedByInstr property when an admin replies', async () => {
             const result = await topics.post({ uid: studentUid, title: 'student topic', content: 'main post', cid: topic.categoryId });
             const { tid } = result.topicData;
             await topics.reply({ uid: adminUid, content: 'admin reply', tid: tid });
             const repliedByInstr = await topics.getTopicField(tid, 'repliedByInstr');
-            assert.strictEqual(repliedByInstr, null); 
+            assert.strictEqual(repliedByInstr, null);
         });
-    
+
         // If an instr replies, the topic's repliedByInstr property will be set to true
         it('should set repliedByInstr property to true when an instructor replies', async () => {
             const result = await topics.post({ uid: studentUid, title: 'student topic', content: 'main post', cid: topic.categoryId });
             const { tid } = result.topicData;
             await topics.reply({ uid: instructorUid, content: 'instr reply', tid: tid });
             const repliedByInstr = await topics.getTopicField(tid, 'repliedByInstr');
-            assert.strictEqual(repliedByInstr.toString(), 'true'); 
+            assert.strictEqual(repliedByInstr.toString(), 'true');
         });
     });
 
     describe('Create New Tag Feature', () => {
-
         it('should successfully create a new topic with new tags as an instructor', async () => {
             try {
-                await topics.post({ 
-                    uid: instructorUid, 
-                    tags: ['hw1', 'hw2', 'hw3', 'hw4', 'exams'], 
-                    title: 'Instr Post', 
-                    content: 'instructor creates new tags', 
-                    cid: topic.categoryId 
+                await topics.post({
+                    uid: instructorUid,
+                    tags: ['hw1', 'hw2', 'hw3', 'hw4', 'exams'],
+                    title: 'Instr Post',
+                    content: 'instructor creates new tags',
+                    cid: topic.categoryId,
                 });
             } catch (err) {
                 assert.fail('Instructor should be able to create new tags');
@@ -111,7 +110,7 @@ describe('Topic\'s', () => {
                     tags: ['newAdminTag1', 'newAdminTag2'],
                     title: 'Admin Post',
                     content: 'An admin creating a post with new tags.',
-                    cid: topic.categoryId
+                    cid: topic.categoryId,
                 });
             } catch (err) {
                 assert.fail('Admin should be able to create new tags');
@@ -119,14 +118,13 @@ describe('Topic\'s', () => {
         });
 
         it('should fail to create a new topic with new tags as a student', async () => {
-            
             try {
                 await topics.post({
                     uid: studentUid,
                     tags: ['newTag1', 'newTag2'],
                     title: 'Student Post',
                     content: 'A student trying to create a post with new tags.',
-                    cid: topic.categoryId
+                    cid: topic.categoryId,
                 });
                 assert.fail('Student should not be able to create new tags');
             } catch (err) {
@@ -135,46 +133,43 @@ describe('Topic\'s', () => {
         });
 
         it('should fail to create a new topic with new tags as a non-admin student', async () => {
-
             try {
-                await topics.post({ 
-                    uid: studentUid, 
-                    tags: ['meow', 'aceThisClass', 'newTag', 'ProCoder', 'drinkJava', 'sleepy'], 
-                    title: topic.title, 
-                    content: 'student try creating new tags', 
-                    cid: topic.categoryId 
+                await topics.post({
+                    uid: studentUid,
+                    tags: ['meow', 'aceThisClass', 'newTag', 'ProCoder', 'drinkJava', 'sleepy'],
+                    title: topic.title,
+                    content: 'student try creating new tags',
+                    cid: topic.categoryId,
                 });
                 assert.fail('Student should not be able to create new tags');
             } catch (err) {
                 assert.ok(err);
             }
         });
-    
+
         it('no-privilege error when a student tries create new tags', async () => {
-    
-            await topics.post({ 
-                uid: instructorUid, 
-                tags: ['hw1', 'hw2', 'hw3', 'hw4', 'exams'], 
-                title: 'Instr Post', 
-                content: 'instr creates new tags', 
-                cid: topic.categoryId 
+            await topics.post({
+                uid: instructorUid,
+                tags: ['hw1', 'hw2', 'hw3', 'hw4', 'exams'],
+                title: 'Instr Post',
+                content: 'instr creates new tags',
+                cid: topic.categoryId,
             });
-    
+
             try {
-                await topics.post({ 
-                    uid: studentUid, 
-                    tags: ['hw1', 'hw2', 'hwSolutions', 'catVideos'], 
-                    title: 'Student Post', 
-                    content: 'student tries to create new tags', 
-                    cid: topic.categoryId 
+                await topics.post({
+                    uid: studentUid,
+                    tags: ['hw1', 'hw2', 'hwSolutions', 'catVideos'],
+                    title: 'Student Post',
+                    content: 'student tries to create new tags',
+                    cid: topic.categoryId,
                 });
                 assert.fail('Student should not be able to create new tags');
             } catch (err) {
                 assert.equal(err.message, '[[error:no-privileges]]');
             }
         });
-
-    });    
+    });
 
     describe('.post', () => {
         it('should fail to create topic with invalid data', async () => {
