@@ -75,7 +75,6 @@ helpers.tryRoute = function (controller, handler) {
                 if (handler) {
                     return handler(err, res);
                 }
-
                 next(err);
             }
         };

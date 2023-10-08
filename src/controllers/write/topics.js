@@ -1,7 +1,8 @@
 'use strict';
 
-const validator = require('validator');
 
+const validator = require('validator');
+// const user = require('../../user');
 const db = require('../../database');
 const api = require('../../api');
 const topics = require('../../topics');
@@ -21,22 +22,31 @@ Topics.create = async (req, res) => {
     const id = await lockPosting(req, '[[error:already-posting]]');
     try {
         const payload = await api.topics.create(req, req.body);
+        // console.log('Topics.create payload------------------------------------');
         if (payload.queued) {
+            // console.log('payload.queued is true');
             helpers.formatApiResponse(202, res, payload);
         } else {
+            // console.log('payload.queued = false');
             helpers.formatApiResponse(200, res, payload);
         }
     } finally {
+        // console.log('deleting object field locks');
         await db.deleteObjectField('locks', id);
     }
 };
 
 Topics.reply = async (req, res) => {
     const id = await lockPosting(req, '[[error:already-posting]]');
+    // console.log('in controllers/write Topics.reply');
+    // console.log('Topics.reply in src/controllers/write: req, res', req, res);
     try {
         const payload = await api.topics.reply(req, { ...req.body, tid: req.params.tid });
+        // console.log('continue controllers/write Topics.reply after api.topics.reply');
+        // console.log('payload in Topics.reply = postObj[0]:', payload);
         helpers.formatApiResponse(200, res, payload);
     } finally {
+        // console.log('reply finally!');
         await db.deleteObjectField('locks', id);
     }
 };

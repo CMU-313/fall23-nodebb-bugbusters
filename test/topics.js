@@ -35,11 +35,13 @@ describe('Topic\'s', () => {
     let adminUid;
     let adminJar;
     let csrf_token;
-    let fooUid;
+    let instructorUid;
+    let studentUid;
 
     before(async () => {
         adminUid = await User.create({ username: 'admin', password: '123456' });
-        fooUid = await User.create({ username: 'foo', accounttype: 'instructor' });
+        instructorUid = await User.create({ username: 'foo', accounttype: 'instructor' });
+        studentUid = await User.create({ username: 'stud', accounttype: 'student' });
         await groups.join('administrators', adminUid);
         const adminLogin = await helpers.loginUser('admin', '123456');
         adminJar = adminLogin.jar;
@@ -55,6 +57,118 @@ describe('Topic\'s', () => {
             title: 'Test Topic Title',
             content: 'The content of test topic',
         };
+    });
+
+    describe('RepliedByInstructor Label Feature', () => {
+        // If a student replies, nothing happens
+        it('should not set repliedByInstr property when a student replies', async () => {
+            const result = await topics.post({ uid: studentUid, title: 'student topic', content: 'main post', cid: topic.categoryId });
+            const { tid } = result.topicData;
+            await topics.reply({ uid: studentUid, content: 'student reply', tid: tid });
+            const repliedByInstr = await topics.getTopicField(tid, 'repliedByInstr');
+            assert.strictEqual(repliedByInstr, null);
+        });
+
+        // If an admin replies, nothing happens
+        it('should not set repliedByInstr property when an admin replies', async () => {
+            const result = await topics.post({ uid: studentUid, title: 'student topic', content: 'main post', cid: topic.categoryId });
+            const { tid } = result.topicData;
+            await topics.reply({ uid: adminUid, content: 'admin reply', tid: tid });
+            const repliedByInstr = await topics.getTopicField(tid, 'repliedByInstr');
+            assert.strictEqual(repliedByInstr, null);
+        });
+
+        // If an instr replies, the topic's repliedByInstr property will be set to true
+        it('should set repliedByInstr property to true when an instructor replies', async () => {
+            const result = await topics.post({ uid: studentUid, title: 'student topic', content: 'main post', cid: topic.categoryId });
+            const { tid } = result.topicData;
+            await topics.reply({ uid: instructorUid, content: 'instr reply', tid: tid });
+            const repliedByInstr = await topics.getTopicField(tid, 'repliedByInstr');
+            assert.strictEqual(repliedByInstr.toString(), 'true');
+        });
+    });
+
+    describe('Create New Tag Feature', () => {
+        it('should successfully create a new topic with new tags as an instructor', async () => {
+            try {
+                await topics.post({
+                    uid: instructorUid,
+                    tags: ['hw1', 'hw2', 'hw3', 'hw4', 'exams'],
+                    title: 'Instr Post',
+                    content: 'instructor creates new tags',
+                    cid: topic.categoryId,
+                });
+            } catch (err) {
+                assert.fail('Instructor should be able to create new tags');
+            }
+        });
+
+        it('should successfully create a new topic with new tags as an admin', async () => {
+            try {
+                await topics.post({
+                    uid: adminUid,
+                    tags: ['newAdminTag1', 'newAdminTag2'],
+                    title: 'Admin Post',
+                    content: 'An admin creating a post with new tags.',
+                    cid: topic.categoryId,
+                });
+            } catch (err) {
+                assert.fail('Admin should be able to create new tags');
+            }
+        });
+
+        it('should fail to create a new topic with new tags as a student', async () => {
+            try {
+                await topics.post({
+                    uid: studentUid,
+                    tags: ['newTag1', 'newTag2'],
+                    title: 'Student Post',
+                    content: 'A student trying to create a post with new tags.',
+                    cid: topic.categoryId,
+                });
+                assert.fail('Student should not be able to create new tags');
+            } catch (err) {
+                assert.ok(err);
+            }
+        });
+
+        it('should fail to create a new topic with new tags as a non-admin student', async () => {
+            try {
+                await topics.post({
+                    uid: studentUid,
+                    tags: ['meow', 'aceThisClass', 'newTag', 'ProCoder', 'drinkJava', 'sleepy'],
+                    title: topic.title,
+                    content: 'student try creating new tags',
+                    cid: topic.categoryId,
+                });
+                assert.fail('Student should not be able to create new tags');
+            } catch (err) {
+                assert.ok(err);
+            }
+        });
+
+        it('no-privilege error when a student tries create new tags', async () => {
+            await topics.post({
+                uid: instructorUid,
+                tags: ['hw1', 'hw2', 'hw3', 'hw4', 'exams'],
+                title: 'Instr Post',
+                content: 'instr creates new tags',
+                cid: topic.categoryId,
+            });
+
+            try {
+                await topics.post({
+                    uid: studentUid,
+                    tags: ['hw1', 'hw2', 'hwSolutions', 'catVideos'],
+                    title: 'Student Post',
+                    content: 'student tries to create new tags',
+                    cid: topic.categoryId,
+                });
+                assert.fail('Student should not be able to create new tags');
+            } catch (err) {
+                assert.equal(err.message, '[[error:no-privileges]]');
+            }
+        });
     });
 
     describe('.post', () => {
@@ -270,7 +384,6 @@ describe('Topic\'s', () => {
             topics.reply({ uid: topic.userId, content: 'test post', tid: newTopic.tid }, (err, result) => {
                 assert.equal(err, null, 'was created with error');
                 assert.ok(result);
-
                 done();
             });
         });
@@ -329,16 +442,16 @@ describe('Topic\'s', () => {
         });
 
         it('should delete nested relies properly', async () => {
-            const result = await topics.post({ uid: fooUid, title: 'nested test', content: 'main post', cid: topic.categoryId });
-            const reply1 = await topics.reply({ uid: fooUid, content: 'reply post 1', tid: result.topicData.tid });
-            const reply2 = await topics.reply({ uid: fooUid, content: 'reply post 2', tid: result.topicData.tid, toPid: reply1.pid });
-            let replies = await socketPosts.getReplies({ uid: fooUid }, reply1.pid);
+            const result = await topics.post({ uid: instructorUid, title: 'nested test', content: 'main post', cid: topic.categoryId });
+            const reply1 = await topics.reply({ uid: instructorUid, content: 'reply post 1', tid: result.topicData.tid });
+            const reply2 = await topics.reply({ uid: instructorUid, content: 'reply post 2', tid: result.topicData.tid, toPid: reply1.pid });
+            let replies = await socketPosts.getReplies({ uid: instructorUid }, reply1.pid);
             assert.strictEqual(replies.length, 1);
             assert.strictEqual(replies[0].content, 'reply post 2');
             let toPid = await posts.getPostField(reply2.pid, 'toPid');
             assert.strictEqual(parseInt(toPid, 10), parseInt(reply1.pid, 10));
-            await posts.purge(reply1.pid, fooUid);
-            replies = await socketPosts.getReplies({ uid: fooUid }, reply1.pid);
+            await posts.purge(reply1.pid, instructorUid);
+            replies = await socketPosts.getReplies({ uid: instructorUid }, reply1.pid);
             assert.strictEqual(replies.length, 0);
             toPid = await posts.getPostField(reply2.pid, 'toPid');
             assert.strictEqual(toPid, null);
@@ -856,14 +969,14 @@ describe('Topic\'s', () => {
 
         it('should not allow user to restore their topic if it was deleted by an admin', async () => {
             const result = await topics.post({
-                uid: fooUid,
+                uid: instructorUid,
                 title: 'topic for restore test',
                 content: 'topic content',
                 cid: categoryObj.cid,
             });
             await apiTopics.delete({ uid: adminUid }, { tids: [result.topicData.tid], cid: categoryObj.cid });
             try {
-                await apiTopics.restore({ uid: fooUid }, { tids: [result.topicData.tid], cid: categoryObj.cid });
+                await apiTopics.restore({ uid: instructorUid }, { tids: [result.topicData.tid], cid: categoryObj.cid });
             } catch (err) {
                 return assert.strictEqual(err.message, '[[error:no-privileges]]');
             }
@@ -1193,10 +1306,10 @@ describe('Topic\'s', () => {
         });
 
         it('should properly update topic vote count after forking', async () => {
-            const result = await topics.post({ uid: fooUid, cid: categoryObj.cid, title: 'fork vote test', content: 'main post' });
-            const reply1 = await topics.reply({ tid: result.topicData.tid, uid: fooUid, content: 'test reply 1' });
-            const reply2 = await topics.reply({ tid: result.topicData.tid, uid: fooUid, content: 'test reply 2' });
-            const reply3 = await topics.reply({ tid: result.topicData.tid, uid: fooUid, content: 'test reply 3' });
+            const result = await topics.post({ uid: instructorUid, cid: categoryObj.cid, title: 'fork vote test', content: 'main post' });
+            const reply1 = await topics.reply({ tid: result.topicData.tid, uid: instructorUid, content: 'test reply 1' });
+            const reply2 = await topics.reply({ tid: result.topicData.tid, uid: instructorUid, content: 'test reply 2' });
+            const reply3 = await topics.reply({ tid: result.topicData.tid, uid: instructorUid, content: 'test reply 3' });
             await posts.upvote(result.postData.pid, adminUid);
             await posts.upvote(reply1.pid, adminUid);
             assert.strictEqual(await db.sortedSetScore('topics:votes', result.topicData.tid), 1);
@@ -2100,7 +2213,7 @@ describe('Topic\'s', () => {
             let err;
             try {
                 await topics.post({
-                    uid: fooUid,
+                    uid: instructorUid,
                     tags: ['locked'],
                     title: 'i cant use this',
                     content: 'topic 1 content',
@@ -2131,7 +2244,7 @@ describe('Topic\'s', () => {
             const oldValue = meta.config.systemTags;
             meta.config.systemTags = 'moved,locked';
             const result = await topics.post({
-                uid: fooUid,
+                uid: instructorUid,
                 tags: ['one', 'two'],
                 title: 'topic with 2 tags',
                 content: 'topic content',
@@ -2145,7 +2258,7 @@ describe('Topic\'s', () => {
             });
             await posts.edit({
                 pid: result.postData.pid,
-                uid: fooUid,
+                uid: instructorUid,
                 content: 'edited content',
                 tags: ['one', 'moved', 'two'],
             });

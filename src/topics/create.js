@@ -66,9 +66,10 @@ module.exports = function (Topics) {
             user.addTopicIdToUser(topicData.uid, topicData.tid, timestamp),
             db.incrObjectField(`category:${topicData.cid}`, 'topic_count'),
             db.incrObjectField('global', 'topicCount'),
-            Topics.createTags(data.tags, topicData.uid, topicData.tid, timestamp),
+            Topics.createTags(data.tags, topicData.tid, timestamp),
             scheduled ? Promise.resolve() : categories.updateRecentTid(topicData.cid, topicData.tid),
         ]);
+        // NOTE: topicData.uid is not needed for Topics.createdTags!!!!!!!!!!!
         if (scheduled) {
             await Topics.scheduled.pin(tid, topicData);
         }
@@ -78,9 +79,9 @@ module.exports = function (Topics) {
     };
 
     Topics.post = async function (data) {
+        // console.log('Topics.post in create.js starts');
         data = await plugins.hooks.fire('filter:topic.post', data);
         const { uid } = data;
-
         data.title = String(data.title).trim();
         data.tags = data.tags || [];
         if (data.content) {
@@ -149,7 +150,7 @@ module.exports = function (Topics) {
         if (parseInt(uid, 10) && !topicData.scheduled) {
             user.notifications.sendTopicNotificationToFollowers(uid, topicData, postData);
         }
-
+        // console.log('Topics.post in create.js return topicData uid, tid=', topicData.uid, topicData.tid);
         return {
             topicData: topicData,
             postData: postData,
@@ -157,6 +158,7 @@ module.exports = function (Topics) {
     };
 
     Topics.reply = async function (data) {
+        // console.log('Topics.reply in create.js starts');
         data = await plugins.hooks.fire('filter:topic.reply', data);
         const { tid } = data;
         const { uid } = data;
@@ -207,6 +209,18 @@ module.exports = function (Topics) {
 
         analytics.increment(['posts', `posts:byCid:${data.cid}`]);
         plugins.hooks.fire('action:topic.reply', { post: _.clone(postData), data: data });
+        // console.log('Topics.reply in create.js postData[tid]: ', postData.tid);
+
+        // Implement TopicRepliedByInstructor Identification Feature
+        // console.log('topics/create.js>>>Topics.reply uid, tid:', uid, tid);
+        const accounttype = await user.getUserField(uid, 'accounttype');
+        assert((typeof accounttype === 'string' || typeof accounttype === 'undefined'), 'accounttype must be string or undefined');
+        if (accounttype === 'instructor') {
+            await Topics.setTopicField(tid, 'repliedByInstr', true);
+            // const rep = await Topics.getTopicField(tid, 'repliedByInstr');
+            // console.log('repliedByInstr:', rep);
+        }
+        // The end of implementation
 
         return postData;
     };
