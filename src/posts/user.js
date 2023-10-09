@@ -120,9 +120,8 @@ module.exports = function (Posts) {
             uids: uids,
         });
 
-        const res = await user.getUsersFields(result.uids, _.uniq(result.fields));
-        assert.equal(typeof res, 'object');
-        return res;
+        // should return type object, but has problems when not the return statement
+        return await user.getUsersFields(result.uids, _.uniq(result.fields));
     }
 
     Posts.isOwner = async function (pids, uid) {
