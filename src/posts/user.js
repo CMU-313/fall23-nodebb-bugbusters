@@ -3,7 +3,6 @@
 const async = require('async');
 const validator = require('validator');
 const _ = require('lodash');
-const assert = require('assert');
 
 const db = require('../database');
 const user = require('../user');
@@ -106,6 +105,7 @@ module.exports = function (Posts) {
     // Output:
     // - A promise that resolves to an array of user data objects with specified fields.
     async function getUserData(uids, uid) {
+        // assert statements should work, but slightly broken
         // assert.equal(typeof (uids), 'object');
         // assert.equal(typeof (uid), 'number');
         const fields = [
