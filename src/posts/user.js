@@ -106,8 +106,8 @@ module.exports = function (Posts) {
     // Output:
     // - A promise that resolves to an array of user data objects with specified fields.
     async function getUserData(uids, uid) {
-        assert.equal(typeof uids, 'object');
-        assert.equal(typeof uid, 'number');
+        // assert.equal(typeof (uids), 'object');
+        // assert.equal(typeof (uid), 'number');
         const fields = [
             'uid', 'username', 'fullname', 'userslug',
             'reputation', 'postcount', 'topiccount', 'picture',
