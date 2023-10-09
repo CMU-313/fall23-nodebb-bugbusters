@@ -96,7 +96,7 @@ describe('User', () => {
             assert.strictEqual(data.topiccount, 0);
             assert.strictEqual(data.lastposttime, 0);
             assert.strictEqual(data.banned, false);
-            assert.strictEqual(data.accounttype, "instructor");
+            assert.strictEqual(data.accounttype, 'instructor');
         });
 
         it('should have a valid email, if using an email', (done) => {

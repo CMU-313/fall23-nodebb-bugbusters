@@ -106,6 +106,8 @@ module.exports = function (Posts) {
     // Output:
     // - A promise that resolves to an array of user data objects with specified fields.
     async function getUserData(uids, uid) {
+        assert.equal(typeof uids, 'object');
+        assert.equal(typeof uid, 'number');
         const fields = [
             'uid', 'username', 'fullname', 'userslug',
             'reputation', 'postcount', 'topiccount', 'picture',
@@ -117,7 +119,10 @@ module.exports = function (Posts) {
             uid: uid,
             uids: uids,
         });
-        return await user.getUsersFields(result.uids, _.uniq(result.fields));
+
+        const res = await user.getUsersFields(result.uids, _.uniq(result.fields));
+        assert.equal(typeof res, 'object');
+        return res;
     }
 
     Posts.isOwner = async function (pids, uid) {

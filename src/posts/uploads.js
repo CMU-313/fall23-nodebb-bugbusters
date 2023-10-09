@@ -109,7 +109,6 @@ module.exports = function (Posts) {
     };
 
     Posts.uploads.cleanOrphans = async () => {
-        // console.log('Posts.uploads.cleanOrphans');
         const now = Date.now();
         const expiration = now - (1000 * 60 * 60 * 24 * meta.config.orphanExpiryDays);
         const days = meta.config.orphanExpiryDays;
@@ -118,7 +117,6 @@ module.exports = function (Posts) {
         }
 
         let orphans = await Posts.uploads.getOrphans();
-        // console.log('orphans are:', orphans);
         orphans = await Promise.all(orphans.map(async (relPath) => {
             const { mtimeMs } = await fs.stat(_getFullPath(relPath));
             return mtimeMs < expiration ? relPath : null;
@@ -129,7 +127,6 @@ module.exports = function (Posts) {
         orphans.forEach((relPath) => {
             file.delete(_getFullPath(relPath));
         });
-        // console.log('result orphans:', orphans);
         return orphans;
     };
 

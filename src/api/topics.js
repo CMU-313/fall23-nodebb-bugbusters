@@ -66,7 +66,6 @@ topicsAPI.create = async function (caller, data) {
 };
 
 topicsAPI.reply = async function (caller, data) {
-    // console.log('topicsAPI.reply(caller*, data)');
     if (!data || !data.tid || (meta.config.minimumPostLength !== 0 && !data.content)) {
         throw new Error('[[error:invalid-data]]');
     }
@@ -96,7 +95,6 @@ topicsAPI.reply = async function (caller, data) {
     }
 
     socketHelpers.notifyNew(caller.uid, 'newPost', result);
-    // console.log('returning postObj[0] and uid:', postObj[0], postObj[0].uid);
     return postObj[0];
 };
 
