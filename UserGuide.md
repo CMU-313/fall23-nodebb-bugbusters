@@ -1,7 +1,5 @@
 User Guide
 
-User Guide
-
 This user guide provides instructions on how to use and test the new features in the application, specifically the ones implemented by the BugBusters Team. Below, you'll find step-by-step instructions for both features, along with information about automated tests.
 
     Endorsement Feature
