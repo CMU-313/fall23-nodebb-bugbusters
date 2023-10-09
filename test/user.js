@@ -83,7 +83,7 @@ describe('User', () => {
 
         it('should be created properly', async () => {
             const email = '<h1>test</h1>@gmail.com';
-            const uid = await User.create({ username: 'weirdemail', email: email });
+            const uid = await User.create({ username: 'weirdemail', email: email, accounttype: 'instructor' });
             const data = await User.getUserData(uid);
 
             const validationPending = await User.email.isValidationPending(uid, email);
@@ -96,6 +96,7 @@ describe('User', () => {
             assert.strictEqual(data.topiccount, 0);
             assert.strictEqual(data.lastposttime, 0);
             assert.strictEqual(data.banned, false);
+            assert.strictEqual(data.accounttype, 'instructor');
         });
 
         it('should have a valid email, if using an email', (done) => {

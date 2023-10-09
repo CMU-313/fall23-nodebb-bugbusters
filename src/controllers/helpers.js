@@ -426,7 +426,6 @@ helpers.getHomePageRoutes = async function (uid) {
 };
 
 helpers.formatApiResponse = async (statusCode, res, payload) => {
-    // console.log('helpers.formatApiResponse function in helpers');
     if (res.req.method === 'HEAD') {
         return res.sendStatus(statusCode);
     }
@@ -514,7 +513,6 @@ async function generateBannedResponse(res) {
 }
 
 helpers.generateError = async (statusCode, message, res) => {
-    // console.log('helpers.generateError');
     async function translateMessage(message) {
         const { req } = res;
         const settings = req.query.lang ? null : await user.getSettings(req.uid);

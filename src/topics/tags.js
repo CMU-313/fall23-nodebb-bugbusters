@@ -66,7 +66,6 @@ module.exports = function (Topics) {
     };
 
     Topics.validateTags = async function (tags, cid, uid, tid = null) {
-        // console.log('validating tags');
         if (!Array.isArray(tags)) {
             throw new Error('[[error:invalid-data]]');
         }
@@ -79,7 +78,6 @@ module.exports = function (Topics) {
         assert((typeof accounttype === 'string' || typeof accounttype === 'undefined'), 'accounttype must be string or undefined');
         const allTags = await getAllTags();
         assert(typeof allTags === 'object', 'allTags must be an array object');
-        // console.log('printing all tags:', allTags);
 
         let isExistingTag = true;
         assert(typeof isExistingTag === 'boolean', 'isExistingTag is a boolean');
@@ -90,20 +88,14 @@ module.exports = function (Topics) {
             for (let j = 0; j < allTags.length; j++) {
                 const allTagVal = allTags[j].value;
                 assert(typeof allTagVal === 'string', 'allTagVal must be a string');
-                // console.log('tag val:', tagVal);
-                // console.log('allTag val:', allTagVal);
                 if (tagVal === allTagVal) {
-                    // console.log('Thay are equal');
                     isExistingTag = true;
                     break;
                 }
             }
             if (!isExistingTag) { break; }
         }
-        // console.log('isExistingTag =', isExistingTag);
-        // console.log('accounttype =', accounttype, accounttype === 'student');
         if (accounttype === 'student' && !isExistingTag && !isAdmin) {
-            // console.log('throw error when non-admin student trying to create new tag');
             throw new Error('[[error:no-privileges]]');
         }
         // The End of Implementation

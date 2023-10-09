@@ -99,18 +99,28 @@ module.exports = function (Posts) {
         return groupsMap;
     }
 
+    // Input:
+    // - uids: An array of user IDs to fetch data for.
+    // - uid: The target user ID for whom additional data is needed.
+    // Output:
+    // - A promise that resolves to an array of user data objects with specified fields.
     async function getUserData(uids, uid) {
+        // assert statements should work, but slightly broken
+        // assert.equal(typeof (uids), 'object');
+        // assert.equal(typeof (uid), 'number');
         const fields = [
             'uid', 'username', 'fullname', 'userslug',
             'reputation', 'postcount', 'topiccount', 'picture',
             'signature', 'banned', 'banned:expire', 'status',
-            'lastonline', 'groupTitle', 'mutedUntil',
+            'lastonline', 'groupTitle', 'mutedUntil', 'accounttype',
         ];
         const result = await plugins.hooks.fire('filter:posts.addUserFields', {
             fields: fields,
             uid: uid,
             uids: uids,
         });
+
+        // should return type object, but has problems when not the return statement
         return await user.getUsersFields(result.uids, _.uniq(result.fields));
     }
 
