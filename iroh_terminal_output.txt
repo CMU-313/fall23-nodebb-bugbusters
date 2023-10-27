@@ -1,4 +1,12 @@
-output for testing a sample file iroh_test.js
+Used a sample code to test, the code was the follwoing:
+
+'use strict';
+
+const iroh = require('iroh');
+
+console.log(iroh);
+
+The output was the following:
 
 node iroh_test.js
 Iroh {
