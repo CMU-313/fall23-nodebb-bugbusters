@@ -41,7 +41,7 @@ describe('Topic\'s', () => {
     before(async () => {
         adminUid = await User.create({ username: 'admin', password: '123456' });
         fooUid = await User.create({ username: 'foo', accounttype: 'instructor' });
-        studUid = await User.create({ username: 'stud', ccounttype: 'student' });
+        studUid = await User.create({ username: 'stud', accounttype: 'student' });
         await groups.join('administrators', adminUid);
         const adminLogin = await helpers.loginUser('admin', '123456');
         adminJar = adminLogin.jar;
