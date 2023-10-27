@@ -1,0 +1,28 @@
+
+> nodebb@2.8.1 flow
+> flow
+
+Error ------------------------------------------------------------------------------------------- src/cli/index.js:30:36
+
+Missing an annotation on `packageName`. [missing-local-annot]
+
+   30|     const checkVersion = function (packageName) {
+                                          ^^^^^^^^^^^
+
+
+Error ------------------------------------------------------------------------------------------- src/cli/index.js:34:15
+
+Cannot assign `'DEP_WRONG_...'` to `e.code` because property `code` is missing in `TypeError` [1]. [prop-missing]
+
+   src/cli/index.js:34:15
+   34|             e.code = 'DEP_WRONG_VERSION';
+                     ^^^^
+
+References:
+   src/cli/index.js:33:23
+   33|             const e = new TypeError(`Incorrect dependency version: ${packageName}`);
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ [1]
+
+
+
+Found 2 errors

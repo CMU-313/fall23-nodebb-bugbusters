@@ -1,3 +1,4 @@
+// @flow
 /*
     NodeBB - A better forum platform for the modern web
     https://github.com/NodeBB/NodeBB/
