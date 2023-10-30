@@ -1,52 +1,52 @@
 put:
-  tags:
-    - posts
-  summary: make a post anonymous
-  description: This operation marks a post as anonymous.
-  parameters:
-    - in: path
-      name: pid
-      schema:
-        type: string
-      required: true
-      description: a valid post id
-      example: 2
-  responses:
-    '200':
-      description: Post successfully anonymized
-      content:
-        application/json:
+    tags:
+        - posts
+    summary: make a post anonymous
+    description: This operation marks a post as anonymous.
+    parameters:
+        - in: path
+          name: pid
           schema:
-            type: object
-            properties:
-              status:
-                $ref: ../../../components/schemas/Status.yaml#/Status
-              response:
-                type: object
-                properties: {}
+              type: string
+          required: true
+          description: a valid post id
+          example: 2
+    responses:
+        "200":
+            description: Post successfully anonymized
+            content:
+                application/json:
+                    schema:
+                        type: object
+                        properties:
+                            status:
+                                $ref: ../../../components/schemas/Status.yaml#/Status
+                            response:
+                                type: object
+                                properties: {}
 delete:
-  tags:
-    - posts
-  summary: De-anonymize a post.
-  description: This operation de-anonymizes a post.
-  parameters:
-    - in: path
-      name: pid
-      schema:
-        type: string
-      required: true
-      description: a valid post id
-      example: 2
-  responses:
-    '200':
-      description: Post successfully de-anonymized
-      content:
-        application/json:
+    tags:
+        - posts
+    summary: De-anonymize a post.
+    description: This operation de-anonymizes a post.
+    parameters:
+        - in: path
+          name: pid
           schema:
-            type: object
-            properties:
-              status:
-                $ref: ../../../components/schemas/Status.yaml#/Status
-              response:
-                type: object
-                properties: {}
+              type: string
+          required: true
+          description: a valid post id
+          example: 2
+    responses:
+        "200":
+            description: Post successfully de-anonymized
+            content:
+                application/json:
+                    schema:
+                        type: object
+                        properties:
+                            status:
+                                $ref: ../../../components/schemas/Status.yaml#/Status
+                            response:
+                                type: object
+                                properties: {}
